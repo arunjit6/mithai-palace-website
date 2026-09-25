@@ -1,0 +1,40 @@
+---
+import CtaButtons from './CtaButtons.astro';
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../data/site';
+import { fullAddress, hoursRows, mapEmbedUrl, mapLinkUrl } from '../lib/format';
+---
+<section id="visit" class="section bg-ivory" aria-labelledby="visit-title">
+  <div class="container-site grid items-center gap-12 lg:grid-cols-2">
+    <div>
+      <SectionHeading id="visit-title" align="left" eyebrow="Come and see us" title="Visit the Shop"
+        lead="Stop by to choose your sweets, taste something new, or pick up a pre-ordered box." />
+
+      <dl class="grid gap-6">
+        <div class="flex gap-4">
+          <dt><Icon name="pin" size={24} class="text-gold-deep" /><span class="sr-only">Address</span></dt>
+          <dd>
+            <a href={mapLinkUrl(site)} target="_blank" rel="noopener" class="link text-lg">{fullAddress(site)}</a>
+            {!site.address.confirmed && <span class="mt-1 block text-sm text-ink-soft">Address to be confirmed</span>}
+          </dd>
+        </div>
+        <div class="flex gap-4">
+          <dt><Icon name="clock" size={24} class="text-gold-deep" /><span class="sr-only">Opening hours</span></dt>
+          <dd class="grid gap-1 text-lg">
+            {hoursRows(site.hours).map(row => (
+              <span class="flex flex-wrap gap-x-4"><span class="text-ink-soft">{row.days}</span><span>{row.open}</span></span>
+            ))}
+          </dd>
+        </div>
+      </dl>
+
+      <div class="mt-10"><CtaButtons showVisitFallback={false} /></div>
+    </div>
+
+    <div class="overflow-hidden rounded-md border border-gold/70 bg-cream p-2">
+      <iframe title={`Map showing ${site.name}`} src={mapEmbedUrl(site)} loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade" class="aspect-[4/3] w-full rounded-sm border-0 grayscale-[.3] sepia-[.15]"></iframe>
+    </div>
+  </div>
+</section>

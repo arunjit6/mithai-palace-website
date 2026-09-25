@@ -1,13 +1,111 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ArchFrame from '../components/ArchFrame.astro';
+import BoxCard from '../components/BoxCard.astro';
+import Button from '../components/Button.astro';
+import CtaButtons from '../components/CtaButtons.astro';
 import PetalDivider from '../components/PetalDivider.astro';
 import PlaceholderImage from '../components/PlaceholderImage.astro';
+import PromiseStrip from '../components/PromiseStrip.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import SweetCard from '../components/SweetCard.astro';
+import VisitUs from '../components/VisitUs.astro';
+import { featuredItems } from '../data/menu';
+import { activeFestivals, boxSizes } from '../data/boxes';
 ---
 <Layout>
-  <section class="container-site section">
-    <h1>Traditionally Sweet</h1>
-    <PetalDivider class="my-10" />
-    <ArchFrame class="aspect-[5/6] w-72"><PlaceholderImage label="Kaju Katli" /></ArchFrame>
+  <!-- Hero -->
+  <section class="lattice relative overflow-hidden">
+    <div class="container-site grid items-center gap-10 py-14 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-20">
+      <div class="order-2 text-center lg:order-1 lg:text-left">
+        <p class="eyebrow">Indian Sweet House · North Mulgrave</p>
+        <h1 class="mt-4">Handcrafted Indian Sweets</h1>
+        <p class="lead mx-auto mt-5 max-w-xl lg:mx-0">
+          Traditional mithai, festive gift boxes and catering, made the way families have made them for generations.
+        </p>
+        <CtaButtons class="mt-8 justify-center lg:justify-start" />
+        <p class="mt-6 text-sm text-ink-soft">
+          Browse the <a href="/menu" class="link">full menu</a> or see our <a href="/gift-boxes" class="link">gift boxes</a>.
+        </p>
+      </div>
+      <div class="order-1 mx-auto w-full max-w-[13rem] sm:max-w-xs lg:order-2 lg:max-w-md">
+        <img src="/brand/logo-full.webp" width="898" height="1100" alt="Mithai Palace — Traditionally Sweet"
+          class="h-auto w-full drop-shadow-[0_18px_30px_rgba(110,12,22,0.08)]" fetchpriority="high" />
+      </div>
+    </div>
   </section>
+
+  <PromiseStrip />
+
+  <!-- Featured sweets -->
+  <section class="section" aria-labelledby="favourites">
+    <div class="container-site">
+      <SectionHeading id="favourites" eyebrow="From our kitchen" title="Favourite Sweets"
+        lead="A few of the classics customers come back for." />
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {featuredItems().map(item => <li><SweetCard item={item} /></li>)}
+      </ul>
+      <div class="mt-12 text-center">
+        <Button href="/menu" variant="secondary" icon="arrow">See the full menu</Button>
+      </div>
+    </div>
+  </section>
+
+  <PetalDivider />
+
+  <!-- Gift boxes -->
+  <section class="section" aria-labelledby="gift-boxes">
+    <div class="container-site">
+      <SectionHeading id="gift-boxes" eyebrow="For every celebration" title="Gift Boxes"
+        lead="Packed with an assortment of our sweets, or filled with your own favourites." />
+      <ul class="grid gap-8 md:grid-cols-3">
+        {boxSizes.map((box, i) => <li><BoxCard box={box} highlight={i === 1} /></li>)}
+      </ul>
+      <div class="mt-12 flex flex-col items-center gap-6">
+        <ul class="flex flex-wrap justify-center gap-2" aria-label="Festival specials">
+          {activeFestivals().map(f => (
+            <li class="rounded-full border border-gold/70 px-4 py-1.5 font-serif text-lg text-maroon">{f.name}</li>
+          ))}
+        </ul>
+        <Button href="/gift-boxes" variant="secondary" icon="gift">Explore gift boxes</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Catering -->
+  <section class="relative overflow-hidden bg-maroon text-cream" aria-labelledby="catering">
+    <div class="absolute inset-0 opacity-60 [background-image:repeating-linear-gradient(45deg,rgb(217_189_134/.08)_0_1px,transparent_1px_22px),repeating-linear-gradient(-45deg,rgb(217_189_134/.08)_0_1px,transparent_1px_22px)]" aria-hidden="true"></div>
+    <div class="container-site section relative">
+      <SectionHeading id="catering" onDark eyebrow="Catering & events" title="Weddings, Parties & Corporate Gifting"
+        lead="From mehndi nights to office Diwali, we prepare sweets and savouries in the quantities you need." />
+      <CtaButtons onDark align="center" enquiryLabel="Request a quote" enquiryHref="/contact?type=catering"
+        whatsappText="Hi Mithai Palace, I'd like a catering quote." />
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="section" aria-labelledby="story">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <ArchFrame class="mx-auto aspect-[5/6] w-full max-w-sm">
+        <PlaceholderImage label="Inside our kitchen" />
+      </ArchFrame>
+      <div>
+        <SectionHeading id="story" align="left" eyebrow="Our story" title="Sweetness, the Traditional Way" />
+        <!-- CONFIRM: replace with the owner's own story -->
+        <div class="grid gap-4 text-lg text-ink-soft">
+          <p>
+            At Mithai Palace, sweets are made the way they have always been made: milk reduced slowly,
+            ghee-roasted flour, and every ladoo shaped by hand.
+          </p>
+          <p>
+            We are proud to bring the flavours of Indian celebrations to North Mulgrave, for festivals,
+            family gatherings and everyday moments that deserve something sweet.
+          </p>
+        </div>
+        <div class="mt-8"><Button href="/about" variant="secondary" icon="arrow">Read our story</Button></div>
+      </div>
+    </div>
+  </section>
+
+  <VisitUs />
 </Layout>

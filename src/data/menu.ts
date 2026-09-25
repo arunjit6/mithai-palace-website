@@ -61,7 +61,7 @@ export const menu: MenuCategory[] = [
       { name: 'Rasgulla', description: 'Spongy cottage-cheese balls in light sugar syrup.', price: TBA, unit: 'kg', featured: true },
       { name: 'Rasmalai', description: 'Cheese patties in saffron-cardamom milk with pistachio.', price: TBA, unit: 'piece', featured: true },
       { name: 'Kalakand', description: 'Grainy, moist milk cake set with cardamom.', price: TBA, unit: 'kg' },
-      { name: 'Milk Cake', description: 'Caramelised milk, slow-cooked until golden at the centre.', price: TBA, unit: 'kg' },
+      { name: 'Milk Cake', description: 'Caramelised milk, slow-cooked until golden at the centre.', price: TBA, unit: 'kg', featured: true },
     ],
   },
   {

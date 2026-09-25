@@ -1,0 +1,22 @@
+---
+import PlaceholderImage from './PlaceholderImage.astro';
+import type { MenuItem } from '../data/menu';
+import { priceLabel } from '../lib/format';
+
+interface Props { item: MenuItem; headingLevel?: 'h3' | 'h4' }
+const { item, headingLevel: Heading = 'h3' } = Astro.props;
+---
+<article class="card flex h-full flex-col overflow-hidden">
+  <div class="aspect-[4/3] border-b border-gold/50">
+    {item.image
+      ? <img src={item.image} alt={item.name} loading="lazy" class="h-full w-full object-cover" />
+      : <PlaceholderImage label={item.name} />}
+  </div>
+  <div class="flex flex-1 flex-col p-5">
+    <Heading class="text-2xl">{item.name}</Heading>
+    <p class="mt-2 flex-1 text-[0.95rem] text-ink-soft">{item.description}</p>
+    <p class="mt-4 border-t border-gold/40 pt-3 text-sm font-semibold tracking-wide text-gold-deep tabular-nums">
+      {priceLabel(item.price, item.unit)}
+    </p>
+  </div>
+</article>
