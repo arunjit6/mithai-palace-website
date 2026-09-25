@@ -1,0 +1,18 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  lead?: string;
+  align?: 'center' | 'left';
+  /** Use cream text for maroon sections */
+  onDark?: boolean;
+  as?: 'h1' | 'h2';
+  id?: string;
+}
+const { eyebrow, title, lead, align = 'center', onDark = false, as: Tag = 'h2', id } = Astro.props;
+---
+<header class:list={['mb-10 lg:mb-14', align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl']}>
+  <p class:list={['eyebrow mb-3', onDark && '!text-gold-light']}>{eyebrow}</p>
+  <Tag id={id} class:list={[onDark && '!text-cream']}>{title}</Tag>
+  {lead && <p class:list={['lead mt-4 italic', onDark && '!text-cream/85']}>{lead}</p>}
+</header>

@@ -1,0 +1,79 @@
+---
+import Icon from './Icon.astro';
+import PetalMark from './PetalMark.astro';
+import { nav } from '../data/nav';
+import { site } from '../data/site';
+import { fullAddress, hoursRows, mailHref, mapLinkUrl, telHref, whatsappHref } from '../lib/format';
+
+const tel = telHref(site.phone);
+const wa = whatsappHref(site.whatsapp);
+const mail = mailHref(site.email);
+const year = new Date().getFullYear();
+---
+<footer class="bg-maroon text-cream">
+  <div class="container-site grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4 lg:py-20">
+    <div>
+      <p class="font-display text-2xl font-bold tracking-[0.06em]">MITHAI PALACE</p>
+      <p class="mt-1 font-display text-[0.65rem] font-semibold tracking-[0.3em] text-gold-light">TRADITIONALLY SWEET</p>
+      <p class="mt-5 max-w-xs font-serif text-lg italic text-cream/80">Handcrafted Indian sweets, gift boxes and catering in North Mulgrave.</p>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Visit</h2>
+      <p class="flex gap-3">
+        <Icon name="pin" class="mt-1 shrink-0 text-gold-light" />
+        <a href={mapLinkUrl(site)} target="_blank" rel="noopener" class="hover:underline">{fullAddress(site)}</a>
+      </p>
+      {!site.address.confirmed && <p class="mt-2 pl-8 text-sm text-cream/60">Address to be confirmed</p>}
+      <dl class="mt-5 flex gap-3">
+        <Icon name="clock" class="mt-1 shrink-0 text-gold-light" />
+        <div class="grid gap-1">
+          {hoursRows(site.hours).map(row => (
+            <div class="flex flex-wrap gap-x-3"><dt class="text-cream/70">{row.days}</dt><dd>{row.open}</dd></div>
+          ))}
+        </div>
+      </dl>
+    </div>
+
+    <div>
+      <h2 class="footer-title">Contact</h2>
+      <ul class="grid gap-3">
+        {tel && <li><a href={tel} class="flex gap-3 hover:underline"><Icon name="phone" class="text-gold-light" />{site.phone}</a></li>}
+        {wa && <li><a href={wa} target="_blank" rel="noopener" class="flex gap-3 hover:underline"><Icon name="whatsapp" class="text-gold-light" />WhatsApp</a></li>}
+        {mail && <li><a href={mail} class="flex gap-3 hover:underline"><Icon name="mail" class="text-gold-light" />{site.email}</a></li>}
+        {!tel && !wa && !mail && <li class="text-cream/70">Phone and email coming soon.</li>}
+        <li><a href="/contact" class="flex gap-3 hover:underline"><Icon name="arrow" class="text-gold-light" />Send an order enquiry</a></li>
+      </ul>
+      {site.socials.length > 0 && (
+        <ul class="mt-5 flex flex-wrap gap-4">
+          {site.socials.map(s => <li><a href={s.url} target="_blank" rel="noopener" class="underline decoration-gold-light underline-offset-4">{s.label}</a></li>)}
+        </ul>
+      )}
+    </div>
+
+    <nav aria-label="Footer">
+      <h2 class="footer-title">Explore</h2>
+      <ul class="grid grid-cols-2 gap-3 lg:grid-cols-1">
+        {nav.map(item => <li><a href={item.href} class="hover:underline">{item.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-t border-gold/40">
+    <div class="container-site flex flex-col items-center justify-between gap-3 py-6 text-sm text-cream/70 sm:flex-row">
+      <p>© {year} {site.name}. All rights reserved.</p>
+      <PetalMark size={22} tone="cream" />
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-title {
+    font-family: var(--font-display);
+    font-size: .8rem;
+    letter-spacing: .25em;
+    color: var(--color-gold-light);
+    margin-bottom: 1.25rem;
+    text-transform: uppercase;
+  }
+</style>

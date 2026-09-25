@@ -1,0 +1,35 @@
+---
+/**
+ * Call / WhatsApp / Enquiry buttons. Channels that are still TBA are hidden,
+ * so visitors never see a dead link.
+ */
+import Button from './Button.astro';
+import { site } from '../data/site';
+import { telHref, whatsappHref } from '../lib/format';
+
+interface Props {
+  enquiryLabel?: string;
+  enquiryHref?: string;
+  align?: 'start' | 'center';
+  onDark?: boolean;
+  whatsappText?: string;
+}
+const {
+  enquiryLabel = 'Send an order enquiry',
+  enquiryHref = '/contact',
+  align = 'start',
+  onDark = false,
+  whatsappText = `Hi ${site.name}, I'd like to place an order.`,
+} = Astro.props;
+
+const tel = telHref(site.phone);
+const wa = whatsappHref(site.whatsapp, whatsappText);
+const primary = onDark ? 'light' : 'primary';
+const secondary = onDark ? 'outline-light' : 'secondary';
+---
+<div class:list={['flex flex-wrap gap-3', align === 'center' && 'justify-center']}>
+  <Button href={enquiryHref} variant={primary} icon="mail">{enquiryLabel}</Button>
+  {tel && <Button href={tel} variant={secondary} icon="phone">Call us</Button>}
+  {wa && <Button href={wa} variant={secondary} icon="whatsapp" external>WhatsApp</Button>}
+  {!tel && !wa && <Button href="/#visit" variant={secondary} icon="pin">Visit the shop</Button>}
+</div>

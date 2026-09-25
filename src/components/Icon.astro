@@ -1,0 +1,26 @@
+---
+/** Small line icons in the brand style (1.5px strokes, round joins). */
+import type { IconName } from '../lib/icons';
+interface Props { name: IconName; size?: number; class?: string }
+const { name, size = 20, class: className } = Astro.props;
+
+const paths: Record<IconName, string> = {
+  phone: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2',
+  whatsapp: 'M3 21l1.65-4.5A8.5 8.5 0 1 1 7.5 19.4L3 21 M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 1a5 5 0 0 1-3-3l1-1-1-2L9 8.5',
+  mail: 'M3 6h18v12H3z M3 6l9 7 9-7',
+  pin: 'M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z M12 12.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6',
+  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 7v5l3 2',
+  leaf: 'M5 19C5 10 10 5 20 4c0 10-5 15-14 15 M5 19l8-8',
+  hands: 'M4 14c2-4 5-6 8-6s6 2 8 6 M6 14v4h12v-4 M12 8V4 M9 5l3-1 3 1',
+  gift: 'M4 10h16v10H4z M3 7h18v3H3z M12 7v13 M12 7c-2-4-6-3-5-1s5 1 5 1c2-4 6-3 5-1s-5 1-5 1',
+  users: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z M2.5 20c.8-3.6 3.3-5.5 6.5-5.5s5.7 1.9 6.5 5.5 M16 4.5a3.5 3.5 0 0 1 0 6.5 M18 14.8c2 .6 3.2 2.3 3.5 5.2',
+  arrow: 'M5 12h14 M13 6l6 6-6 6',
+  menu: 'M4 7h16 M4 12h16 M4 17h16',
+  close: 'M6 6l12 12 M18 6L6 18',
+  box: 'M3 8l9-4 9 4v9l-9 4-9-4z M3 8l9 4 9-4 M12 12v9',
+};
+---
+<svg viewBox="0 0 24 24" width={size} height={size} class={className} fill="none" stroke="currentColor"
+  stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  <path d={paths[name]} />
+</svg>

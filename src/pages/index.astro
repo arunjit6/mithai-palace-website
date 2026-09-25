@@ -1,7 +1,13 @@
 ---
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
+import ArchFrame from '../components/ArchFrame.astro';
+import PetalDivider from '../components/PetalDivider.astro';
+import PlaceholderImage from '../components/PlaceholderImage.astro';
 ---
-<html lang="en-AU">
-  <head><meta charset="utf-8" /><title>Mithai Palace</title></head>
-  <body><h1 class="text-maroon">Mithai Palace</h1></body>
-</html>
+<Layout>
+  <section class="container-site section">
+    <h1>Traditionally Sweet</h1>
+    <PetalDivider class="my-10" />
+    <ArchFrame class="aspect-[5/6] w-72"><PlaceholderImage label="Kaju Katli" /></ArchFrame>
+  </section>
+</Layout>
