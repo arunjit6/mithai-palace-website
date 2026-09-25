@@ -12,7 +12,8 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest run",
-    "placeholders": "node scripts/placeholders.mjs"
+    "placeholders": "node scripts/placeholders.mjs",
+    "verify": "astro check && astro build && vitest run"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
