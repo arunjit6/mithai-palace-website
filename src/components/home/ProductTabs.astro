@@ -1,0 +1,72 @@
+---
+/**
+ * "Savour the best": category tabs over a product grid.
+ * Without JavaScript every panel is shown one after another.
+ */
+import Button from '../Button.astro';
+import SectionHeading from '../SectionHeading.astro';
+import ProductCard from './ProductCard.astro';
+import { menu } from '../../data/menu';
+---
+<section class="section bg-ivory/60" aria-labelledby="savour">
+  <div class="container-site">
+    <SectionHeading id="savour" eyebrow="From our kitchen" title="Savour the Best of Mithai Palace" />
+
+    <div role="tablist" aria-label="Sweet categories" id="product-tabs"
+      class="mx-auto -mt-4 mb-10 flex max-w-full gap-1 overflow-x-auto border-b border-gold/50 [scrollbar-width:none] sm:w-fit sm:justify-center">
+      {menu.map((c, i) => (
+        <button role="tab" type="button" id={`tab-${c.id}`} aria-controls={`panel-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'}
+          tabindex={i === 0 ? 0 : -1}
+          class="tab shrink-0 px-4 py-3 text-xl whitespace-nowrap text-ink-soft sm:px-6" style="font-family: var(--font-serif)">
+          {c.name}
+        </button>
+      ))}
+    </div>
+
+    {menu.map((c, i) => (
+      <div role="tabpanel" id={`panel-${c.id}`} aria-labelledby={`tab-${c.id}`} data-panel hidden={i !== 0}>
+        <ul class="grid grid-cols-2 gap-x-5 gap-y-10 lg:grid-cols-4">
+          {c.items.slice(0, 4).map(item => <li><ProductCard item={item} /></li>)}
+        </ul>
+      </div>
+    ))}
+
+    <div class="mt-12 text-center">
+      <Button href="/menu" variant="secondary" icon="arrow">View full menu</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tab { position: relative; font-weight: 600; transition: color .15s ease-out; }
+  .tab:hover { color: var(--color-maroon); }
+  .tab[aria-selected='true'] { color: var(--color-maroon); }
+  .tab[aria-selected='true']::after {
+    content: ''; position: absolute; left: .75rem; right: .75rem; bottom: -1px; height: 2px; background: var(--color-maroon);
+  }
+</style>
+
+<script>
+  const list = document.getElementById('product-tabs')!;
+  const tabs = [...list.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+
+  const select = (tab: HTMLButtonElement, focus = false) => {
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', String(on));
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')!)!.hidden = !on;
+    });
+    if (focus) tab.focus();
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', e => {
+      const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      select(tabs[(next + tabs.length) % tabs.length], true);
+    });
+  });
+</script>

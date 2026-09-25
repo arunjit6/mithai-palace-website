@@ -3,8 +3,9 @@ import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 
 const pages: Record<string, string[]> = {
-  'index.html': ['Handcrafted Indian Sweets', 'Sweets by Category', 'href="/menu#ladoo"', 'Favourite Sweets', 'Festival special',
-    'Festival Orders', 'Which box, for whom?', 'For neighbours', 'Sweets for Every Occasion', 'Visit the Shop'],
+  'index.html': ['Sweetness for Every Celebration', 'Featured Categories', 'href="/menu#ladoo"', 'role="tablist"',
+    'Savour the Best of Mithai Palace', 'item=Kaju%20Katli', 'Festival special', 'Festival Orders', 'Giving Gifts with Mithai Palace',
+    'Which box, for whom?', 'For neighbours', 'Made with Care', 'Discover our story', 'Sweets for Every Occasion', 'Visit the Shop'],
   'menu/index.html': ['Kaju Katli', 'Gulab Jamun', 'Samosa', 'id="namkeen"'],
   'gift-boxes/index.html': ['500 g', 'Diwali', 'Raksha Bandhan'],
   'catering/index.html': ['Weddings &amp; Engagements', '/contact?type=catering'],

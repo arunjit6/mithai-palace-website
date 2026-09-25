@@ -61,10 +61,18 @@ so the site never shows a wrong phone number or price.
 
 ### Photos
 
-1. Put photos in `public/images/` (JPG or WebP, about 1200 px wide, landscape 4:3 for sweets).
-2. Add `image: '/images/kaju-katli.jpg'` to the item in `src/data/menu.ts`.
+Drop photos into `src/assets/photos/` and they replace the matching stand-in automatically.
+No code changes are needed. The file name decides where a photo appears:
 
-Until then each item shows an on-brand "Photo coming soon" panel.
+| File name (.jpg, .png or .webp) | Where it appears |
+|---|---|
+| `hero` | Big banner at the top of the home page (at least 1600 px wide) |
+| `gifting` | Gift banner on the home page |
+| `story` | "Our story" panel on the home page |
+| `category-barfi`, `category-ladoo`, `category-halwa`, `category-milk-sweets`, `category-namkeen` | Category cards |
+| `sweet-kaju-katli`, `sweet-gulab-jamun`, … | Each sweet (its name in lower case, spaces become dashes) |
+
+Until then each space shows an on-brand maroon or ivory stand-in.
 
 ### Enquiry form
 

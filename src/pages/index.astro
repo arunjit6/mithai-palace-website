@@ -1,112 +1,69 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ArchFrame from '../components/ArchFrame.astro';
 import BoxCard from '../components/BoxCard.astro';
-import CategoryTiles from '../components/CategoryTiles.astro';
 import Button from '../components/Button.astro';
-import CtaButtons from '../components/CtaButtons.astro';
 import FestivalBanner from '../components/FestivalBanner.astro';
 import Occasions from '../components/Occasions.astro';
-import PlaceholderImage from '../components/PlaceholderImage.astro';
-import PromiseStrip from '../components/PromiseStrip.astro';
 import Reviews from '../components/Reviews.astro';
 import Ribbon from '../components/Ribbon.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import SweetCard from '../components/SweetCard.astro';
 import VisitUs from '../components/VisitUs.astro';
-import { featuredItems } from '../data/menu';
-import { activeFestivals, boxSizes } from '../data/boxes';
+import CategoryCards from '../components/home/CategoryCards.astro';
+import GiftBanner from '../components/home/GiftBanner.astro';
+import HeroBanner from '../components/home/HeroBanner.astro';
+import ProductTabs from '../components/home/ProductTabs.astro';
+import PromiseBox from '../components/home/PromiseBox.astro';
+import StorySplit from '../components/home/StorySplit.astro';
+import { boxSizes } from '../data/boxes';
 ---
 <Layout>
-  <!-- Hero -->
-  <section class="lattice relative overflow-hidden">
-    <div class="container-site grid items-center gap-10 py-14 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-20">
-      <div class="order-2 text-center lg:order-1 lg:text-left">
-        <p class="eyebrow">Indian Sweet House · North Mulgrave</p>
-        <h1 class="mt-4">Handcrafted Indian Sweets</h1>
-        <p class="lead mx-auto mt-5 max-w-xl lg:mx-0">
-          Traditional mithai, festive gift boxes and catering, made the way families have made them for generations.
-        </p>
-        <CtaButtons class="mt-8 justify-center lg:justify-start" />
-        <p class="mt-6 text-sm text-ink-soft">
-          Browse the <a href="/menu" class="link">full menu</a> or see our <a href="/gift-boxes" class="link">gift boxes</a>.
-        </p>
-      </div>
-      <div class="order-1 mx-auto w-full max-w-[13rem] sm:max-w-xs lg:order-2 lg:max-w-md">
-        <img src="/brand/logo-full.webp" width="898" height="1100" alt="Mithai Palace — Traditionally Sweet"
-          class="h-auto w-full drop-shadow-[0_18px_30px_rgba(110,12,22,0.08)]" fetchpriority="high" />
-      </div>
-    </div>
-  </section>
+<div class="home">
+  <HeroBanner />
 
   <FestivalBanner />
 
-  <PromiseStrip />
+  <CategoryCards />
 
-  <CategoryTiles />
-
-  <!-- Featured sweets -->
-  <section class="section bg-ivory/60" aria-labelledby="favourites">
-    <div class="container-site">
-      <SectionHeading id="favourites" eyebrow="From our kitchen" title="Favourite Sweets"
-        lead="A few of the classics customers come back for." />
-      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {featuredItems().map(item => <li><SweetCard item={item} /></li>)}
-      </ul>
-      <div class="mt-12 text-center">
-        <Button href="/menu" variant="secondary" icon="arrow">See the full menu</Button>
-      </div>
-    </div>
-  </section>
+  <ProductTabs />
 
   <Ribbon />
 
-  <!-- Gift boxes -->
-  <section class="section" aria-labelledby="gift-boxes">
+  <GiftBanner />
+
+  <!-- Box guide -->
+  <section class="section" aria-labelledby="boxes">
     <div class="container-site">
-      <SectionHeading id="gift-boxes" eyebrow="Which box, for whom?" title="Gift Boxes"
+      <SectionHeading id="boxes" eyebrow="Which box, for whom?" title="Gift Boxes"
         lead="Packed with an assortment of our sweets, or filled with your own favourites." />
       <ul class="grid gap-8 md:grid-cols-3">
         {boxSizes.map((box, i) => <li><BoxCard box={box} highlight={i === 1} /></li>)}
       </ul>
-      <div class="mt-12 flex flex-col items-center gap-6">
-        <ul class="flex flex-wrap justify-center gap-2" aria-label="Festival specials">
-          {activeFestivals().map(f => (
-            <li class="rounded-full border border-gold/70 px-4 py-1.5 font-serif text-lg text-maroon">{f.name}</li>
-          ))}
-        </ul>
-        <Button href="/gift-boxes" variant="secondary" icon="gift">Explore gift boxes</Button>
+      <div class="mt-12 text-center">
+        <Button href="/gift-boxes" variant="secondary" icon="gift">All gift boxes &amp; festivals</Button>
       </div>
     </div>
   </section>
+
+  <PromiseBox />
+
+  <StorySplit />
 
   <Occasions />
-
-  <!-- Story -->
-  <section class="section" aria-labelledby="story">
-    <div class="container-site grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
-      <ArchFrame class="mx-auto aspect-[5/6] w-full max-w-sm">
-        <PlaceholderImage label="Inside our kitchen" />
-      </ArchFrame>
-      <div>
-        <SectionHeading id="story" align="left" eyebrow="Our story" title="Sweetness, the Traditional Way" />
-        <!-- CONFIRM: replace with the owner's own story -->
-        <div class="grid gap-4 text-lg text-ink-soft">
-          <p>
-            At Mithai Palace, sweets are made the way they have always been made: milk reduced slowly,
-            ghee-roasted flour, and every ladoo shaped by hand.
-          </p>
-          <p>
-            We are proud to bring the flavours of Indian celebrations to North Mulgrave, for festivals,
-            family gatherings and everyday moments that deserve something sweet.
-          </p>
-        </div>
-        <div class="mt-8"><Button href="/about" variant="secondary" icon="arrow">Read our story</Button></div>
-      </div>
-    </div>
-  </section>
 
   <Reviews />
 
   <VisitUs />
+</div>
 </Layout>
+
+<style is:global>
+  /* Home page: one elegant serif for section titles, as on the reference shop site */
+  .home h2 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.05;
+    font-size: clamp(2.25rem, 3vw + 1rem, 3.25rem);
+  }
+</style>

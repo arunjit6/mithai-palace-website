@@ -1,0 +1,30 @@
+---
+/** Shop-style card: square photo, badge, name, price and an enquiry button. */
+import Photo from '../Photo.astro';
+import type { MenuItem } from '../../data/menu';
+import { priceLabel } from '../../lib/format';
+import { slug } from '../../lib/photos';
+
+interface Props { item: MenuItem }
+const { item } = Astro.props;
+const enquire = `/contact?type=order&item=${encodeURIComponent(item.name)}`;
+---
+<article class="group flex h-full flex-col">
+  <div class="relative aspect-square overflow-hidden rounded-sm border border-gold/40 bg-ivory">
+    {item.badge && (
+      <span class:list={['absolute top-3 left-3 z-10 rounded-sm px-2.5 py-1 text-[0.65rem] font-semibold tracking-[0.16em] uppercase',
+        item.badge === 'New' ? 'bg-gold-deep text-cream' : 'bg-maroon text-cream']}>{item.badge}</span>
+    )}
+    <div class="h-full w-full transition-transform duration-500 group-hover:scale-[1.03]">
+      {item.image
+        ? <img src={item.image} alt={item.name} loading="lazy" class="h-full w-full object-cover" />
+        : <Photo name={`sweet-${slug(item.name)}`} alt={item.name} />}
+    </div>
+  </div>
+  <h3 class="mt-4 text-2xl">{item.name}</h3>
+  <p class="mt-1 flex-1 text-[0.95rem] text-ink-soft">{item.description}</p>
+  <p class="mt-3 text-sm font-semibold text-gold-deep tabular-nums">{priceLabel(item.price, item.unit)}</p>
+  <a href={enquire} class="mt-3 flex min-h-11 items-center justify-center rounded-sm bg-ivory text-sm font-semibold tracking-[0.06em] text-maroon uppercase ring-1 ring-gold/50 transition-colors hover:bg-maroon hover:text-cream">
+    Enquire<span class="sr-only"> about {item.name}</span>
+  </a>
+</article>

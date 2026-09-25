@@ -1,0 +1,56 @@
+---
+/** Full-width hero like a shop banner. Uses src/assets/photos/hero.* when present. */
+import Button from '../Button.astro';
+import { findPhoto } from '../../lib/photos';
+
+const photo = findPhoto('hero');
+---
+<section class="relative isolate overflow-hidden bg-maroon" aria-labelledby="hero-title">
+  {photo ? (
+    <>
+      <img src={photo.src} width={photo.width} height={photo.height} alt="" fetchpriority="high"
+        class="absolute inset-0 -z-10 h-full w-full object-cover" />
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-maroon-deep/85 via-maroon-deep/50 to-transparent"></div>
+    </>
+  ) : (
+    <div class="hero-standin absolute inset-0 -z-10" aria-hidden="true"></div>
+  )}
+
+  <div class="container-site grid min-h-[34rem] items-center gap-10 py-16 lg:min-h-[38rem] lg:grid-cols-[1.15fr_1fr]">
+    <div class="max-w-2xl text-center lg:text-left">
+      <p class="eyebrow !text-gold-light">Mithai Palace · North Mulgrave</p>
+      <h1 id="hero-title" class="mt-4 font-serif !font-semibold !text-cream normal-case"
+        style="font-family: var(--font-serif); font-size: clamp(2.75rem, 6vw + 1rem, 5rem); letter-spacing: 0; line-height: 1.02;">
+        Sweetness for Every Celebration
+      </h1>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-cream/85 lg:mx-0">
+        Traditional mithai, festive gift boxes and catering, made the way families have made them for generations.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
+        <Button href="/menu" variant="light" icon="arrow">See our sweets</Button>
+        <Button href="/contact" variant="outline-light" icon="mail">Order enquiry</Button>
+      </div>
+    </div>
+
+    {!photo && (
+      <div class="mx-auto hidden w-full max-w-sm lg:block" aria-hidden="true">
+        <div class="arch-window relative aspect-[5/6] bg-cream p-8 shadow-[0_30px_60px_rgb(0_0_0/0.25)]">
+          <img src="/brand/logo-full.webp" width="898" height="1100" alt="" class="h-full w-full object-contain" />
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .hero-standin {
+    background:
+      repeating-linear-gradient(45deg, rgb(217 189 134 / .08) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(-45deg, rgb(217 189 134 / .08) 0 1px, transparent 1px 28px),
+      radial-gradient(ellipse at 75% 45%, var(--color-maroon-light) 0%, var(--color-maroon) 45%, var(--color-maroon-deep) 100%);
+  }
+  .arch-window {
+    clip-path: url(#arch-clip);
+    outline: none;
+  }
+</style>

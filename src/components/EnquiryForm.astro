@@ -117,6 +117,11 @@ const types = [
   const select = form.querySelector<HTMLSelectElement>('#f-type')!;
   if (type && [...select.options].some(o => o.value === type)) select.value = type;
 
+  // Pre-fill the message from ?item=Kaju%20Katli (the "Enquire" buttons on sweets)
+  const item = new URLSearchParams(location.search).get('item');
+  const message = form.querySelector<HTMLTextAreaElement>('#f-message')!;
+  if (item && !message.value) message.value = `I'd like to order: ${item.slice(0, 80)} (quantity: )`;
+
   const fields = ['f-name', 'f-phone', 'f-email', 'f-message'].map(id => form.querySelector<HTMLInputElement>(`#${id}`)!);
 
   const validate = (el: HTMLInputElement) => {

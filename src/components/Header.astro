@@ -1,47 +1,67 @@
 ---
+/** Centred-logo header: links left, logo centre, contact + enquiry right (desktop). */
 import Icon from './Icon.astro';
 import { site } from '../data/site';
 import { nav } from '../data/nav';
+import { telHref } from '../lib/format';
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const left = nav.filter(n => ['/', '/menu', '/gift-boxes'].includes(n.href));
+const right = nav.filter(n => ['/catering', '/about'].includes(n.href));
+const tel = telHref(site.phone);
 ---
-<header id="site-header" class="sticky top-0 z-40 border-b border-transparent bg-cream/95 backdrop-blur transition-[border-color,box-shadow] duration-200">
-  <div class="container-site flex h-18 items-center justify-between gap-4 lg:h-22">
-    <a href="/" class="flex shrink-0 items-center gap-3" aria-label={`${site.name}, home`}>
-      <img src="/brand/emblem.webp" alt="" width="480" height="326" class="h-10 w-auto lg:h-12" />
-      <span class="leading-none">
-        <span class="block font-display text-lg font-bold tracking-[0.06em] text-maroon lg:text-xl">MITHAI PALACE</span>
-        <span class="mt-1 block font-display text-[0.6rem] font-semibold tracking-[0.3em] text-gold-deep">TRADITIONALLY SWEET</span>
-      </span>
-    </a>
-
-    <nav aria-label="Main" class="hidden lg:block">
-      <ul class="flex items-center gap-7">
-        {nav.map(item => (
-          <li>
-            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}
-              class="nav-link font-display text-[0.8rem] font-semibold tracking-[0.14em] text-ink uppercase hover:text-maroon">
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-
-    <div class="flex items-center gap-2">
-      <a href="/contact" class="btn btn-primary hidden sm:inline-flex">Order enquiry</a>
-      <button id="menu-toggle" type="button" class="inline-flex size-11 items-center justify-center rounded text-maroon lg:hidden"
+<header id="site-header" class="sticky top-0 z-40 border-b border-gold/40 bg-cream/95 backdrop-blur transition-shadow duration-200">
+  <div class="container-site grid h-18 grid-cols-[auto_1fr_auto] items-center gap-4 lg:h-24 lg:grid-cols-[1fr_auto_1fr]">
+    <!-- Left: menu button (mobile) / links (desktop) -->
+    <div class="flex items-center">
+      <button id="menu-toggle" type="button" class="-ml-2 inline-flex size-11 items-center justify-center rounded text-maroon lg:hidden"
         aria-expanded="false" aria-controls="mobile-menu">
         <span class="sr-only">Open menu</span>
         <Icon name="menu" size={26} class="icon-open" />
         <Icon name="close" size={26} class="icon-close hidden" />
       </button>
+      <nav aria-label="Main" class="hidden lg:block">
+        <ul class="flex items-center gap-5 xl:gap-7">
+          {left.map(item => (
+            <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined} class="nav-link">{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Centre: logo -->
+    <a href="/" class="flex items-center justify-center gap-3 justify-self-center" aria-label={`${site.name}, home`}>
+      <img src="/brand/emblem.webp" alt="" width="480" height="326" class="h-9 w-auto lg:h-11" />
+      <span class="leading-none">
+        <span class="block font-display text-lg font-bold tracking-[0.06em] text-maroon lg:text-2xl">MITHAI PALACE</span>
+        <span class="mt-1 hidden font-display text-[0.6rem] font-semibold tracking-[0.32em] text-gold-deep sm:block">TRADITIONALLY SWEET</span>
+      </span>
+    </a>
+
+    <!-- Right: links + actions -->
+    <div class="flex items-center justify-end gap-5 xl:gap-7">
+      <nav aria-label="Secondary" class="hidden lg:block">
+        <ul class="flex items-center gap-5 xl:gap-7">
+          {right.map(item => (
+            <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined} class="nav-link">{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+      {tel && (
+        <a href={tel} class="hidden text-maroon hover:text-maroon-light md:inline-flex" aria-label={`Call ${site.name}`}>
+          <Icon name="phone" size={22} />
+        </a>
+      )}
+      <a href="/contact" class="btn btn-primary hidden !px-5 sm:inline-flex">Order enquiry</a>
+      <a href="/contact" class="-mr-2 inline-flex size-11 items-center justify-center text-maroon sm:hidden" aria-label="Order enquiry">
+        <Icon name="mail" size={24} />
+      </a>
     </div>
   </div>
 
   <nav id="mobile-menu" aria-label="Mobile" hidden
-    class="lattice absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-gold/60 bg-cream lg:hidden">
+    class="lattice absolute inset-x-0 top-full h-[calc(100dvh-4.5rem)] lg:h-auto overflow-y-auto border-t border-gold/60 bg-cream lg:hidden">
     <ul class="container-site flex flex-col py-6">
       {nav.map(item => (
         <li class="border-b border-gold/30">
@@ -60,14 +80,24 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
 </header>
 
 <style>
-  .nav-link { position: relative; padding-block: .25rem; }
+  .nav-link {
+    position: relative;
+    padding-block: .25rem;
+    font-family: var(--font-display);
+    font-size: .8rem;
+    font-weight: 600;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  .nav-link:hover, .nav-link[aria-current='page'] { color: var(--color-maroon); }
   .nav-link::after {
     content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px;
     background: var(--color-gold); transform: scaleX(0); transition: transform .2s ease-out;
   }
   .nav-link:hover::after, .nav-link[aria-current='page']::after { transform: scaleX(1); }
-  .nav-link[aria-current='page'] { color: var(--color-maroon); }
-  #site-header.scrolled { border-color: color-mix(in srgb, var(--color-gold) 60%, transparent); box-shadow: 0 4px 18px rgb(110 12 22 / .06); }
+  #site-header.scrolled { box-shadow: 0 4px 18px rgb(110 12 22 / .07); }
 </style>
 
 <script>

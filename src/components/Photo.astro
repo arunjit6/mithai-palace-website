@@ -1,0 +1,55 @@
+---
+/**
+ * A photo slot. Shows src/assets/photos/<name>.* if it exists, otherwise an
+ * on-brand stand-in: 'rich' (maroon, gold lattice and arch) or 'light' (ivory).
+ */
+import PetalMark from './PetalMark.astro';
+import { findPhoto } from '../lib/photos';
+
+interface Props {
+  name: string;
+  alt: string;
+  tone?: 'rich' | 'light';
+  /** Show the label and "photo coming soon" in the stand-in */
+  showLabel?: boolean;
+  class?: string;
+  eager?: boolean;
+}
+const { name, alt, tone = 'light', showLabel = true, class: className, eager = false } = Astro.props;
+const photo = findPhoto(name);
+---
+{photo ? (
+  <img src={photo.src} width={photo.width} height={photo.height} alt={alt}
+    loading={eager ? 'eager' : 'lazy'} class:list={['h-full w-full object-cover', className]} />
+) : tone === 'rich' ? (
+  <div class:list={['standin-rich relative flex h-full w-full items-center justify-center overflow-hidden', className]}
+    role="img" aria-label={`Photo coming soon: ${alt}`}>
+    <svg class="absolute inset-0 m-auto h-[82%] w-auto max-w-[70%] opacity-50" viewBox="0 0 100 120" aria-hidden="true">
+      <path d="M0 120 L0 56 C0 48 5 44 11 44 C11 36 17 30 25 30 C27 19 38 11 50 0 C62 11 73 19 75 30 C83 30 89 36 89 44 C95 44 100 48 100 56 L100 120 Z"
+        fill="none" stroke="var(--color-gold-light)" stroke-width=".6" />
+      <path d="M8 120 L8 59 C8 53 12 50 17 50 C17 42 22 37 30 37 C32 27 41 20 50 10 C59 20 68 27 70 37 C78 37 83 42 83 50 C88 50 92 53 92 59 L92 120"
+        fill="none" stroke="var(--color-gold-light)" stroke-width=".35" />
+    </svg>
+    <div class="relative flex flex-col items-center gap-3 text-center">
+      <PetalMark size={56} tone="cream" />
+      {showLabel && <span class="font-serif text-xl text-cream/85 italic">{alt}</span>}
+      {showLabel && <span class="text-[0.65rem] font-semibold tracking-[0.2em] text-gold-light uppercase">Photo coming soon</span>}
+    </div>
+  </div>
+) : (
+  <div class:list={['lattice flex h-full w-full flex-col items-center justify-center gap-3 bg-ivory p-6 text-center', className]}
+    role="img" aria-label={`Photo coming soon: ${alt}`}>
+    <PetalMark size={44} />
+    {showLabel && <span class="font-serif text-lg text-ink-soft italic">{alt}</span>}
+    {showLabel && <span class="text-[0.65rem] font-semibold tracking-[0.2em] text-gold-deep uppercase">Photo coming soon</span>}
+  </div>
+)}
+
+<style>
+  .standin-rich {
+    background:
+      repeating-linear-gradient(45deg, rgb(217 189 134 / .09) 0 1px, transparent 1px 26px),
+      repeating-linear-gradient(-45deg, rgb(217 189 134 / .09) 0 1px, transparent 1px 26px),
+      radial-gradient(ellipse at 70% 40%, var(--color-maroon-light), var(--color-maroon) 55%, var(--color-maroon-deep));
+  }
+</style>

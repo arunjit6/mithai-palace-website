@@ -1,0 +1,27 @@
+---
+/** Half photo, half text "Our story" panel. Photo: src/assets/photos/story.* */
+import Button from '../Button.astro';
+import PetalDivider from '../PetalDivider.astro';
+import Photo from '../Photo.astro';
+---
+<section class="grid bg-cream lg:grid-cols-2" aria-labelledby="story">
+  <div class="aspect-[4/3] lg:aspect-auto lg:min-h-[34rem]">
+    <Photo name="story" alt="Inside the Mithai Palace kitchen" tone="rich" />
+  </div>
+  <div class="flex items-center justify-center bg-ivory/60 px-6 py-16 text-center sm:px-12 lg:py-20">
+    <div class="max-w-md">
+      <p class="eyebrow">Our story</p>
+      <h2 id="story" class="mt-3 font-serif normal-case"
+        style="font-family: var(--font-serif); font-size: clamp(2.25rem, 3vw + 1rem, 3.5rem); letter-spacing: 0; line-height: 1.05;">
+        Taste, Tradition &amp; Togetherness
+      </h2>
+      <PetalDivider class="my-7" />
+      <!-- CONFIRM: replace with the owner's own story (and a "since" year if there is one) -->
+      <p class="text-lg text-ink-soft">
+        Sweets made the way they have always been made: milk reduced slowly, ghee-roasted flour, and every ladoo shaped by hand,
+        now shared with the families of North Mulgrave.
+      </p>
+      <div class="mt-9"><Button href="/about" variant="secondary" icon="arrow">Discover our story</Button></div>
+    </div>
+  </div>
+</section>

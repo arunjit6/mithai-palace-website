@@ -1,0 +1,37 @@
+---
+/** Four promises in an ornamented box ("Responsible Indulgence" on the reference site). */
+import Icon from '../Icon.astro';
+import PetalMark from '../PetalMark.astro';
+import { site } from '../../data/site';
+---
+<section class="section" aria-labelledby="promise">
+  <div class="container-site">
+    <div class="promise-box relative bg-ivory px-6 py-14 text-center sm:px-12 lg:py-16">
+      {['top-3 left-3', 'top-3 right-3', 'bottom-3 left-3', 'bottom-3 right-3'].map(pos => (
+        <span class:list={['absolute', pos]}><PetalMark size={22} /></span>
+      ))}
+      <p class="eyebrow">Our promise</p>
+      <h2 id="promise" class="mt-3 font-serif normal-case"
+        style="font-family: var(--font-serif); font-size: clamp(2.25rem, 3vw + 1rem, 3.25rem); letter-spacing: 0;">
+        Made with Care
+      </h2>
+      <ul class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        {site.promises.map(p => (
+          <li class="flex flex-col items-center">
+            <Icon name={p.icon} size={52} class="text-maroon" />
+            <h3 class="mt-5 text-2xl">{p.title}</h3>
+            <p class="mt-2 max-w-[16rem] text-ink-soft">{p.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .promise-box {
+    outline: 1px solid var(--color-gold);
+    outline-offset: -10px;
+    border: 1px solid color-mix(in srgb, var(--color-gold) 50%, transparent);
+  }
+</style>
