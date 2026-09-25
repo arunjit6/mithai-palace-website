@@ -3,7 +3,8 @@ import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 
 const pages: Record<string, string[]> = {
-  'index.html': ['Handcrafted Indian Sweets', 'Favourite Sweets', 'Gift Boxes', 'Visit the Shop'],
+  'index.html': ['Handcrafted Indian Sweets', 'Sweets by Category', 'href="/menu#ladoo"', 'Favourite Sweets', 'Festival special',
+    'Festival Orders', 'Which box, for whom?', 'For neighbours', 'Sweets for Every Occasion', 'Visit the Shop'],
   'menu/index.html': ['Kaju Katli', 'Gulab Jamun', 'Samosa', 'id="namkeen"'],
   'gift-boxes/index.html': ['500 g', 'Diwali', 'Raksha Bandhan'],
   'catering/index.html': ['Weddings &amp; Engagements', '/contact?type=catering'],
@@ -33,6 +34,13 @@ describe.skipIf(!existsSync('dist'))('built site', () => {
         expect(built.has(href.replace(/\/$/, '') || '/'), `${file} links to missing ${href}`).toBe(true);
       }
     }
+  });
+
+  it('switched-off and empty sections stay hidden', () => {
+    const home = readFileSync('dist/index.html', 'utf8');
+    expect(home).not.toContain('aria-label="Announcement"');
+    expect(home).not.toContain('id="festival-banner"');
+    expect(home).not.toContain('Sweet Words from Our Customers');
   });
 
   it('generates a sitemap', () => expect(existsSync('dist/sitemap-index.xml')).toBe(true));

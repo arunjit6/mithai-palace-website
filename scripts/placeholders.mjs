@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const targets = [
-  { dir: 'src/data', pattern: /\bTBA\b|confirmed: false/ },
+  { dir: 'src/data', pattern: /\bTBA\b|confirmed: false|CONFIRM/ },
   { dir: 'src/pages', pattern: /CONFIRM/ },
 ];
 

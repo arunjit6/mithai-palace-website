@@ -37,6 +37,11 @@ You do not need to touch the page designs. Everything the shop changes lives in 
 | Gift boxes and festivals | `src/data/boxes.ts` | Switch a festival on or off with `active: true / false`. |
 | "Why us" promises (home page strip) | `src/data/site.ts` → `promises` | Change the wording to what is true for the shop, then set `confirmed: true`. |
 | Story text | `src/pages/about.astro`, `src/pages/index.astro` | Look for the `CONFIRM` comments. |
+| Announcement bar (top of every page) | `src/data/site.ts` → `announcement` | Ready with a Diwali message. Set `active: true` to show it. |
+| Festival banner (home page) | `src/data/boxes.ts` → `festivalBanner` | Ready for Diwali (Sunday 8 November). Fill in `orderBy`, then set `active: true`. |
+| Labels on sweets | `src/data/menu.ts` → `badge` | `'Best seller'`, `'New'` or `'Festival special'`. Remove a badge by deleting it. |
+| Box guide ("for whom?") | `src/data/boxes.ts` → `forWhom` | Short phrase shown on each gift box. |
+| Customer reviews | `src/data/reviews.ts` | Paste real reviews (name, month, text) and/or the Google reviews link. The section stays hidden until then. |
 
 **Examples** (in `src/data/site.ts`):
 

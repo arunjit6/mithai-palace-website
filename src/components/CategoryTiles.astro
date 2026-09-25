@@ -1,0 +1,37 @@
+---
+/** "Explore by category" tiles linking into the menu. */
+import ArchFrame from './ArchFrame.astro';
+import PlaceholderImage from './PlaceholderImage.astro';
+import SectionHeading from './SectionHeading.astro';
+import { menu } from '../data/menu';
+---
+<section class="section" aria-labelledby="categories">
+  <div class="container-site">
+    <SectionHeading id="categories" eyebrow="Explore" title="Sweets by Category" />
+    <ul class="grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-5 max-sm:[&>li:last-child:nth-child(odd)]:col-span-2">
+      {menu.map(c => {
+        const cover = c.items.find(i => i.image)?.image;
+        return (
+          <li>
+            <a href={`/menu#${c.id}`} class="tile group block text-center">
+              <ArchFrame class="mx-auto aspect-[5/6] w-full max-w-[11rem] transition-transform duration-200 group-hover:-translate-y-1">
+                {cover
+                  ? <img src={cover} alt="" loading="lazy" class="h-full w-full object-cover" />
+                  : <PlaceholderImage label={c.name} />}
+              </ArchFrame>
+              <span class="mt-4 block font-display text-sm font-semibold tracking-[0.14em] text-maroon uppercase group-hover:text-maroon-light">
+                {c.name}
+              </span>
+              <span class="mt-1 block text-sm text-ink-soft">{c.items.length} varieties</span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Placeholder text is too small inside tiles; keep just the petal */
+  .tile :global([role='img'] span) { display: none; }
+</style>

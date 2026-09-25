@@ -1,0 +1,37 @@
+---
+/** Real customer reviews from src/data/reviews.ts. Hidden until there is something real to show. */
+import Button from './Button.astro';
+import PetalMark from './PetalMark.astro';
+import SectionHeading from './SectionHeading.astro';
+import { googleReviewsUrl, reviews } from '../data/reviews';
+import { isTBA } from '../data/tba';
+import { showReviews } from '../lib/content';
+---
+{showReviews(reviews, googleReviewsUrl) && (
+  <section class="section" aria-labelledby="reviews">
+    <div class="container-site">
+      <SectionHeading id="reviews" eyebrow="In their own words" title="Sweet Words from Our Customers" />
+      {reviews.length > 0 && (
+        <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {reviews.map(r => (
+            <li>
+              <figure class="card flex h-full flex-col p-8 hover:translate-y-0 hover:shadow-none">
+                <PetalMark size={24} />
+                <blockquote class="mt-4 flex-1 font-serif text-xl leading-snug text-ink italic">“{r.text}”</blockquote>
+                <figcaption class="mt-6 border-t border-gold/40 pt-4 text-sm">
+                  <span class="font-semibold text-maroon">{r.name}</span>
+                  <span class="text-ink-soft"> · {r.date}</span>
+                </figcaption>
+              </figure>
+            </li>
+          ))}
+        </ul>
+      )}
+      {!isTBA(googleReviewsUrl) && (
+        <div class="mt-10 text-center">
+          <Button href={googleReviewsUrl} variant="secondary" icon="arrow" external>Read our Google reviews</Button>
+        </div>
+      )}
+    </div>
+  </section>
+)}

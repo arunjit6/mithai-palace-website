@@ -10,6 +10,14 @@ export interface ShopPromise {
   confirmed: boolean;
 }
 
+export interface Announcement {
+  /** Show the thin bar above the header on every page? */
+  active: boolean;
+  text: string;
+  href?: string;
+  linkLabel?: string;
+}
+
 export interface Site {
   name: string;
   tagline: string;
@@ -32,6 +40,7 @@ export interface Site {
   /** Formspree (or similar) form URL for the enquiry form */
   formEndpoint: Maybe<string>;
   promises: ShopPromise[];
+  announcement: Announcement;
 }
 
 // ── Edit shop details here ────────────────────────────────────────────────
@@ -59,4 +68,11 @@ export const site: Site = {
     { icon: 'gift', title: 'Gift Boxes', text: 'Beautifully packed boxes for every celebration.', confirmed: false },
     { icon: 'users', title: 'Catering & Events', text: 'Sweets and savouries for weddings, parties and offices.', confirmed: false },
   ],
+  // Switch on with active: true (e.g. a few weeks before Diwali)
+  announcement: {
+    active: false,
+    text: 'Diwali gift boxes are now open for orders',
+    href: '/gift-boxes#diwali',
+    linkLabel: 'Order early',
+  },
 };

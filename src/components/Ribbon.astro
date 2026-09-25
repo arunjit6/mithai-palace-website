@@ -1,0 +1,30 @@
+---
+/** Slow scrolling gold-on-maroon band. Stops for visitors who prefer reduced motion. */
+interface Props { items?: string[] }
+const { items = ['Fresh Mithai', 'Gift Boxes', 'Festival Orders', 'Catering', 'Traditional Recipes', 'North Mulgrave'] } = Astro.props;
+const run = [...items, ...items];
+---
+<div class="ribbon overflow-hidden border-y border-gold bg-maroon py-4 text-gold-light" role="presentation">
+  <p class="sr-only">{items.join(', ')}</p>
+  <div class="ribbon-track flex w-max" aria-hidden="true">
+    {[0, 1].map(() => (
+      <ul class="flex shrink-0 items-center">
+        {run.map(t => (
+          <li class="flex items-center font-display text-sm font-semibold tracking-[0.22em] whitespace-nowrap uppercase">
+            <span class="px-6">{t}</span>
+            <svg viewBox="0 0 10 10" width="8" height="8" class="fill-gold"><path d="M5 0 L6.2 3.8 L10 5 L6.2 6.2 L5 10 L3.8 6.2 L0 5 L3.8 3.8 Z" /></svg>
+          </li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+
+<style>
+  .ribbon-track { animation: ribbon 60s linear infinite; }
+  .ribbon:hover .ribbon-track { animation-play-state: paused; }
+  @keyframes ribbon { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ribbon-track { animation: none; }
+  }
+</style>

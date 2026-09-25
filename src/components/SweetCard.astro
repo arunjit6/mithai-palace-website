@@ -7,7 +7,11 @@ interface Props { item: MenuItem; headingLevel?: 'h3' | 'h4' }
 const { item, headingLevel: Heading = 'h3' } = Astro.props;
 ---
 <article class="card flex h-full flex-col overflow-hidden">
-  <div class="aspect-[4/3] border-b border-gold/50">
+  <div class="relative aspect-[4/3] border-b border-gold/50">
+    {item.badge && (
+      <span class:list={['absolute top-3 left-3 z-10 rounded-sm px-2.5 py-1 text-[0.65rem] font-semibold tracking-[0.16em] uppercase shadow-sm',
+        item.badge === 'New' ? 'bg-gold-deep text-cream' : 'bg-maroon text-cream']}>{item.badge}</span>
+    )}
     {item.image
       ? <img src={item.image} alt={item.name} loading="lazy" class="h-full w-full object-cover" />
       : <PlaceholderImage label={item.name} />}

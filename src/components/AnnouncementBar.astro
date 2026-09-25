@@ -1,0 +1,27 @@
+---
+/** Thin maroon strip above the header. Switch on in src/data/site.ts → announcement. */
+import PetalMark from './PetalMark.astro';
+import { site } from '../data/site';
+import { visibleAnnouncement } from '../lib/content';
+
+const a = visibleAnnouncement(site.announcement);
+---
+{a && (
+  <div class="bg-maroon text-cream" role="region" aria-label="Announcement">
+    <p class="container-site flex items-center justify-center gap-3 py-2.5 text-center text-sm">
+      <PetalMark size={14} tone="cream" class="hidden shrink-0 sm:block" />
+      <span>
+        {a.text}
+        {a.href && (
+          <>
+            {' · '}
+            <a href={a.href} class="font-semibold underline decoration-gold-light underline-offset-4 hover:text-gold-light">
+              {a.linkLabel ?? 'Find out more'}
+            </a>
+          </>
+        )}
+      </span>
+      <PetalMark size={14} tone="cream" class="hidden shrink-0 sm:block" />
+    </p>
+  </div>
+)}

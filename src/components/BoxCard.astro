@@ -7,13 +7,11 @@ interface Props { box: BoxSize; highlight?: boolean }
 const { box, highlight = false } = Astro.props;
 ---
 <article class:list={['card relative flex h-full flex-col items-center px-6 pt-10 pb-8 text-center', highlight && 'ring-1 ring-gold']}>
-  {highlight && (
-    <span class="absolute -top-3 rounded-sm bg-maroon px-3 py-1 text-[0.65rem] font-semibold tracking-[0.2em] text-cream uppercase">Most loved</span>
-  )}
   <PetalMark size={36} />
   <p class="eyebrow mt-5">{box.weight}</p>
   <h3 class="mt-2 text-3xl">{box.name}</h3>
-  <p class="mt-3 flex-1 text-ink-soft">{box.serves}</p>
+  <p class="mt-4 rounded-full border border-gold/60 px-4 py-1 font-serif text-lg text-maroon italic">For {box.forWhom.charAt(0).toLowerCase() + box.forWhom.slice(1)}</p>
+  <p class="mt-4 flex-1 text-ink-soft">{box.serves}</p>
   <p class="mt-6 font-display text-lg font-semibold text-maroon">
     {isTBA(box.price) ? 'Price on request' : `From $${box.price.toFixed(2)}`}
   </p>

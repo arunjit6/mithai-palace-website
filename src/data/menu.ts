@@ -6,6 +6,8 @@ export interface MenuItem {
   price: Maybe<number>;
   unit: 'kg' | 'piece' | 'dozen';
   featured?: boolean;
+  /** Small tag on the card */
+  badge?: 'Best seller' | 'New' | 'Festival special';
   /** Path under /public, e.g. '/images/kaju-katli.jpg' */
   image?: string;
 }
@@ -24,7 +26,7 @@ export const menu: MenuCategory[] = [
     name: 'Barfi',
     blurb: 'Rich, fudge-like squares made from reduced milk, nuts and gram flour.',
     items: [
-      { name: 'Kaju Katli', description: 'Silky cashew diamonds finished with edible silver leaf.', price: TBA, unit: 'kg', featured: true },
+      { name: 'Kaju Katli', description: 'Silky cashew diamonds finished with edible silver leaf.', price: TBA, unit: 'kg', featured: true, badge: 'Festival special' }, // CONFIRM badge,
       { name: 'Plain Milk Barfi', description: 'Slow-reduced milk and sugar, lightly scented with cardamom.', price: TBA, unit: 'kg' },
       { name: 'Pista Barfi', description: 'Milk barfi layered with ground pistachio.', price: TBA, unit: 'kg' },
       { name: 'Coconut Barfi', description: 'Soft squares of coconut cooked in milk.', price: TBA, unit: 'kg' },
@@ -36,7 +38,7 @@ export const menu: MenuCategory[] = [
     name: 'Ladoo',
     blurb: 'Round, hand-rolled sweets at the heart of every celebration.',
     items: [
-      { name: 'Motichoor Ladoo', description: 'Tiny pearls of gram flour batter, soaked in syrup and rolled by hand.', price: TBA, unit: 'kg', featured: true },
+      { name: 'Motichoor Ladoo', description: 'Tiny pearls of gram flour batter, soaked in syrup and rolled by hand.', price: TBA, unit: 'kg', featured: true, badge: 'Festival special' }, // CONFIRM badge,
       { name: 'Besan Ladoo', description: 'Gram flour slow-roasted in ghee with cardamom.', price: TBA, unit: 'kg', featured: true },
       { name: 'Coconut Ladoo', description: 'Coconut and condensed milk rolled into soft rounds.', price: TBA, unit: 'kg' },
       { name: 'Dry Fruit Ladoo', description: 'Dates, figs and nuts pressed together.', price: TBA, unit: 'kg' },
