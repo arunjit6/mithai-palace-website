@@ -1,7 +1,8 @@
 ---
-import PlaceholderImage from './PlaceholderImage.astro';
+import Photo from './Photo.astro';
 import type { MenuItem } from '../data/menu';
 import { priceLabel } from '../lib/format';
+import { slug } from '../lib/photos';
 
 interface Props { item: MenuItem; headingLevel?: 'h3' | 'h4' }
 const { item, headingLevel: Heading = 'h3' } = Astro.props;
@@ -14,7 +15,7 @@ const { item, headingLevel: Heading = 'h3' } = Astro.props;
     )}
     {item.image
       ? <img src={item.image} alt={item.name} loading="lazy" class="h-full w-full object-cover" />
-      : <PlaceholderImage label={item.name} />}
+      : <Photo name={`sweet-${slug(item.name)}`} alt={item.name} />}
   </div>
   <div class="flex flex-1 flex-col p-5">
     <Heading class="text-2xl">{item.name}</Heading>

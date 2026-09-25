@@ -1,7 +1,7 @@
 ---
 /**
  * Full-width hero like a shop banner.
- * With src/assets/photos/hero.* it becomes a photo banner with light text;
+ * With src/assets/photos/hero.* the photo fills the banner behind a soft blush fade;
  * without it, a soft peach banner with the logo shown as-is (no frame).
  */
 import Button from '../Button.astro';
@@ -9,28 +9,29 @@ import { findPhoto } from '../../lib/photos';
 
 const photo = findPhoto('hero');
 ---
-<section class:list={['relative isolate overflow-hidden', photo ? 'bg-ink' : 'hero-soft']} aria-labelledby="hero-title">
+<section class="hero-soft relative isolate overflow-hidden" aria-labelledby="hero-title">
   {photo && (
     <>
       <img src={photo.src} width={photo.width} height={photo.height} alt="" fetchpriority="high"
         class="absolute inset-0 -z-10 h-full w-full object-cover" />
-      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-black/70 via-black/35 to-transparent"></div>
+      <!-- soft blush fade so the headline stays readable over light box renders -->
+      <div class="absolute inset-0 -z-10 bg-gradient-to-r from-cream via-cream/80 to-transparent lg:via-cream/50"></div>
     </>
   )}
 
   <div class:list={['container-site grid items-center gap-8 py-14 lg:min-h-[36rem] lg:py-16', !photo && 'lg:grid-cols-[1.1fr_1fr]']}>
     <div class:list={['max-w-2xl text-center lg:text-left', !photo && 'order-2 lg:order-1']}>
-      <p class:list={['eyebrow', photo && '!text-cream']}>Mithai Palace · North Mulgrave</p>
-      <h1 id="hero-title" class:list={['mt-4', photo && '!text-cream']}
+      <p class="eyebrow">Mithai Palace · North Mulgrave</p>
+      <h1 id="hero-title" class="mt-4"
         style="font-family: var(--font-serif); font-weight: 600; font-size: clamp(2.75rem, 6vw + 1rem, 5rem); letter-spacing: 0; line-height: 1.02;">
         Sweetness for Every Celebration
       </h1>
-      <p class:list={['mx-auto mt-6 max-w-xl text-lg lg:mx-0', photo ? 'text-cream/90' : 'text-ink-soft']}>
+      <p class="mx-auto mt-6 max-w-xl text-lg text-ink-soft lg:mx-0">
         Traditional mithai, festive gift boxes and catering, made the way families have made them for generations.
       </p>
       <div class="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
-        <Button href="/menu" variant={photo ? 'light' : 'primary'} icon="arrow">See our sweets</Button>
-        <Button href="/contact" variant={photo ? 'outline-light' : 'secondary'} icon="mail">Order enquiry</Button>
+        <Button href="/menu" variant="primary" icon="arrow">See our sweets</Button>
+        <Button href="/contact" variant="secondary" icon="mail">Order enquiry</Button>
       </div>
     </div>
 

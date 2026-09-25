@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mithai Palace Crest Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#FDF8EC; --ivory:#F6EDD8; --maroon:#6E0C16; --gold:#B08A4C; --gold-deep:#7A5C24; --ink:#2A1A14; --ink-soft:#5C4A40; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--cream); color:var(--ink); font:400 1rem/1.6 Inter, system-ui, sans-serif; }
+  header, main { max-width:1200px; margin:0 auto; padding-left:16px; padding-right:16px; }
+  header { padding-top:3rem; padding-bottom:1rem; }
+  .eyebrow { font:500 .78rem Cinzel, serif; letter-spacing:.25em; color:var(--gold-deep); text-transform:uppercase; }
+  h1 { font:700 clamp(2rem,5vw,3rem) Cinzel, serif; color:var(--maroon); margin:.3rem 0 .5rem; }
+  header p { max-width:68ch; color:var(--ink-soft); }
+  main { padding-top:1rem; padding-bottom:4rem; display:grid; gap:2rem; }
+  .card { background:var(--ivory); border:1px solid var(--gold); border-radius:6px; overflow:hidden; }
+  .head { padding:1.25rem 1.5rem .5rem; display:flex; gap:1rem; align-items:baseline; flex-wrap:wrap; }
+  .num { font:600 .8rem Cinzel, serif; letter-spacing:.2em; color:var(--gold-deep); }
+  h2 { font:600 1.6rem 'Cormorant Garamond', serif; color:var(--maroon); margin:0; }
+  .desc { padding:0 1.5rem 1rem; color:var(--ink-soft); max-width:78ch; margin:0; }
+  .desc b { color:var(--ink); font-weight:600; }
+  .previews { display:grid; grid-template-columns:1.3fr 1fr .55fr; border-top:1px solid rgb(176 138 76 / .5); }
+  .pv { padding:1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem; min-height:300px; }
+  .pv > svg { width:100%; height:auto; max-height:360px; }
+  .pv.light { background:var(--cream); }
+  .pv.dark { background:var(--maroon); }
+  .pv.small { background:var(--cream); border-left:1px solid rgb(176 138 76 / .5); gap:1rem; }
+  .row { display:flex; gap:14px; align-items:center; padding:8px; border-radius:4px; }
+  .lbl { font:500 .7rem Inter; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); }
+  .pv.dark .lbl { color:#E9D9B8; }
+  @media (max-width:760px) { .previews { grid-template-columns:1fr; } .pv.small { border-left:0; border-top:1px solid rgb(176 138 76 / .5); min-height:0; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Brand exploration · round 3</div>
+  <h1>More heritage crests</h1>
+  <p>Seven more options in the style of the Heritage crest: a palace inside a frame, with MITHAI and PALACE stacked underneath. Each changes one thing: the building, the frame, or how the gold and maroon are used. All are vector drawings, so they print sharply at any size.</p>
+</header>
+<main id="board"></main>
+
+<script>
+const LIGHT = { w:'#6E0C16', g:'#B08A4C', gt:'#7A5C24', fill:'#FDF8EC', acc:'#6E0C16', jewel:'#6E0C16', jg:'#D2B070', band:'#6E0C16', bandText:'#FDF8EC', tail:'#4A0810' };
+const DARK  = { w:'#FDF8EC', g:'#C9A566', gt:'#E4CFA0', fill:'#6E0C16', acc:'#FDF8EC', jewel:'#42060D', jg:'#D8B77A', band:'#C9A566', bandText:'#4A0810', tail:'#8C6A2E' };
+
+const NS = 'vector-effect="non-scaling-stroke"';
+const ARCH = 'M10,222 V120 C10,98 28,90 44,90 C44,70 60,58 76,56 C80,38 92,28 100,8 C108,28 120,38 124,56 C140,58 156,70 156,90 C172,90 190,98 190,120 V222';
+const PETAL = 'M50 47 C40 38 37 22 50 6 C63 22 60 38 50 47 Z';
+const at = (cx, baseY, s, fromX = 100, fromY = 150) => `transform="translate(${cx},${baseY}) scale(${s}) translate(${-fromX},${-fromY})"`;
+
+function dome(x, baseY, w, c, sw = 1.4) {
+  const s = w / 40, o = c.outline;
+  return `<g transform="translate(${x},${baseY - 44 * s}) scale(${s})">
+    <line x1="20" y1="6" x2="20" y2="-6" stroke="${c.g}" stroke-width="${sw}" ${NS}/>
+    <circle cx="20" cy="-8" r="2.6" fill="${c.g}"/>
+    <path d="M2,44 C-4,28 12,16 20,6 C28,16 44,28 38,44 Z" fill="${o ? 'none' : c.g}" fill-opacity=".85" stroke="${c.g}" stroke-width="${sw}" ${NS}/>
+    <path d="M20,8 C16,20 14,32 15,44 M20,8 C24,20 26,32 25,44" fill="none" stroke="${o ? c.g : c.fill}" stroke-opacity="${o ? 1 : .55}" stroke-width="1" ${NS}/>
+  </g>`;
+}
+function gate(cx, baseY, w, h, fill, stroke) {
+  const x0 = cx - w / 2, x1 = cx + w / 2, sh = baseY - h * .62;
+  return `<path d="M${x0},${baseY} V${sh} C${x0},${sh - h * .2} ${cx - w * .2},${sh - h * .25} ${cx},${baseY - h} C${cx + w * .2},${sh - h * .25} ${x1},${sh - h * .2} ${x1},${sh} V${baseY} Z" fill="${fill}" ${stroke ? `stroke="${stroke}" stroke-width="1.2"` : ''}/>`;
+}
+function petals(cx, cy, size, fill, stroke, sw = 3) {
+  let p = '';
+  for (const r of [0, 90, 180, 270]) p += `<path d="${PETAL}" transform="rotate(${r} 50 50)"/>`;
+  return `<g transform="translate(${cx - size / 2},${cy - size / 2}) scale(${size / 100})" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round">${p}<circle cx="50" cy="50" r="7" fill="${stroke}" stroke="none"/></g>`;
+}
+const box = c => (x, y, w, h) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c.outline ? 'none' : c.fill}" stroke="${c.g}" stroke-width="1.4"/>`;
+const mainGate = (c, cx, baseY, w, h) => c.outline ? gate(cx, baseY, w, h, 'none', c.g) : gate(cx, baseY, w, h, c.acc);
+
+/* the five-domed palace from the Heritage crest, base line at y=150 */
+function palace(c) {
+  const t = box(c);
+  return `
+    ${t(34,125,6,25)}${t(160,125,6,25)}${t(62,112,8,38)}${t(130,112,8,38)}
+    ${t(20,118,16,32)}${t(164,118,16,32)}${t(40,100,24,50)}${t(136,100,24,50)}${t(70,85,60,65)}
+    <rect x="66" y="82" width="68" height="5" fill="${c.g}"/>
+    <rect x="37" y="97" width="30" height="4" fill="${c.g}"/><rect x="133" y="97" width="30" height="4" fill="${c.g}"/>
+    ${dome(75, 83, 50, c)}${dome(40, 98, 24, c)}${dome(136, 98, 24, c)}${dome(20, 118, 16, c)}${dome(164, 118, 16, c)}
+    ${mainGate(c, 100, 150, 22, 44)}
+    ${gate(80, 118, 7, 16, 'none', c.g)}${gate(120, 118, 7, 16, 'none', c.g)}
+    ${gate(52, 150, 12, 26, 'none', c.g)}${gate(148, 150, 12, 26, 'none', c.g)}
+    ${gate(52, 120, 7, 12, 'none', c.g)}${gate(148, 120, 7, 12, 'none', c.g)}
+    ${gate(28, 150, 8, 18, 'none', c.g)}${gate(172, 150, 8, 18, 'none', c.g)}
+    <line x1="12" y1="150.5" x2="188" y2="150.5" stroke="${c.g}" stroke-width="2.4"/>`;
+}
+
+/* a Taj-style mausoleum: one great dome, chhatris, two minarets */
+function taj(c) {
+  const t = box(c);
+  const minaret = x => `${t(x, 72, 7, 74)}
+    <rect x="${x - 2.5}" y="92" width="12" height="3" fill="${c.g}"/><rect x="${x - 2.5}" y="114" width="12" height="3" fill="${c.g}"/><rect x="${x - 2.5}" y="134" width="12" height="3" fill="${c.g}"/>
+    ${dome(x - 3.5, 72, 14, c)}`;
+  return `${minaret(22)}${minaret(171)}
+    ${t(56,98,88,48)}${t(84,102,32,44)}
+    <rect x="52" y="95" width="96" height="4" fill="${c.g}"/>
+    ${t(76,86,48,9)}
+    ${dome(66, 87, 68, c)}${dome(55, 95, 15, c)}${dome(130, 95, 15, c)}
+    ${mainGate(c, 100, 146, 22, 40)}
+    ${gate(66, 146, 10, 20, 'none', c.g)}${gate(66, 121, 10, 16, 'none', c.g)}
+    ${gate(134, 146, 10, 20, 'none', c.g)}${gate(134, 121, 10, 16, 'none', c.g)}
+    <rect x="14" y="146" width="172" height="5" fill="${c.g}"/>`;
+}
+
+function stack(c, cx, y, s = 1) {
+  return `<g transform="translate(${cx},${y}) scale(${s}) translate(-100,-272)">
+    <text x="100" y="272" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="46" fill="${c.w}" textLength="186" lengthAdjust="spacingAndGlyphs">MITHAI</text>
+    <text x="100" y="298" text-anchor="middle" font-family="Cinzel" font-weight="600" font-size="19" fill="${c.gt}" letter-spacing="8">PALACE</text>
+    <path d="M22,291 l4,-4 l4,4 l-4,4 Z M170,291 l4,-4 l4,4 l-4,4 Z" fill="${c.g}"/>
+    <text x="100" y="318" text-anchor="middle" font-family="Cinzel" font-weight="500" font-size="8.6" fill="${c.w}" letter-spacing="3">TRADITIONALLY SWEET</text></g>`;
+}
+const archFrame = (c, fill = 'none') => `<path d="${ARCH}${fill !== 'none' ? ' Z' : ''}" fill="${fill}" stroke="${c.g}" stroke-width="3.2"/>
+  <path d="${ARCH}" fill="none" stroke="${c.jewelLine || c.w}" stroke-width="1" ${at(100, 222, .95, 100, 222)}/>`;
+const icon = (s, vb, body) => `<svg width="${s}" height="${s}" viewBox="${vb}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
+
+/* A. Taj crest */
+const tajMark = c => `${archFrame(c)}<g ${at(100, 222, 1.1)}>${taj(c)}</g>`;
+const tajCrest = c => `<svg viewBox="0 0 200 330">${tajMark(c)}${stack(c, 100, 272)}</svg>`;
+const tajIcon = (c, s) => icon(s, '0 0 200 230', `<path d="${ARCH} Z" fill="${c.fill}" stroke="${c.g}" stroke-width="6"/><g ${at(100, 222, 1.1)}>${taj(c)}</g>`);
+
+/* B. Medallion and ribbon */
+function medMark(c) {
+  return `<circle cx="120" cy="112" r="98" fill="${c.fill}" stroke="${c.g}" stroke-width="3"/>
+    <circle cx="120" cy="112" r="91" fill="none" stroke="${c.w}" stroke-width="1"/>
+    ${petals(120, 40, 22, c.w, c.g, 5)}
+    <g ${at(120, 172, .8)}>${palace(c)}</g>`;
+}
+const medallion = c => `<svg viewBox="0 0 240 300">${medMark(c)}
+  <path d="M40,186 H6 L18,201 L6,216 H40 Z" fill="${c.tail}"/><path d="M200,186 H234 L222,201 L234,216 H200 Z" fill="${c.tail}"/>
+  <path d="M40,216 L50,224 V216 Z M200,216 L190,224 V216 Z" fill="${c.tail}"/>
+  <rect x="24" y="178" width="192" height="38" fill="${c.band}"/>
+  <line x1="30" y1="182" x2="210" y2="182" stroke="${c.g}" stroke-width="1"/><line x1="30" y1="212" x2="210" y2="212" stroke="${c.g}" stroke-width="1"/>
+  <text x="120" y="205" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="21" fill="${c.bandText}" textLength="164" lengthAdjust="spacingAndGlyphs">MITHAI PALACE</text>
+  <text x="120" y="250" text-anchor="middle" font-family="Cinzel" font-weight="500" font-size="11" fill="${c.gt}" letter-spacing="4">TRADITIONALLY SWEET</text>
+  <line x1="40" y1="272" x2="100" y2="272" stroke="${c.g}" stroke-width="1"/><line x1="140" y1="272" x2="200" y2="272" stroke="${c.g}" stroke-width="1"/>
+  ${petals(120, 272, 20, c.w, c.g, 5)}</svg>`;
+const medIcon = (c, s) => icon(s, '14 6 212 212', medMark(c));
+
+/* C. Jewel crest — solid maroon arch, gold palace */
+function jewelMark(c) {
+  const jc = { ...c, fill: c.jewel, g: c.jg, acc: '#FDF8EC' };
+  return `<path d="${ARCH} Z" fill="${c.jewel}" stroke="${c.g}" stroke-width="3.2"/>
+    <path d="${ARCH}" fill="none" stroke="${c.jg}" stroke-width="1" ${at(100, 222, .93, 100, 222)}/>
+    <g ${at(100, 214, 1.02)}>${palace(jc)}</g>`;
+}
+const jewel = c => `<svg viewBox="0 0 200 330">${jewelMark(c)}${stack(c, 100, 272)}</svg>`;
+const jewelIcon = (c, s) => icon(s, '0 0 200 230', jewelMark(c));
+
+/* D. Monoline crest — gold line only */
+function monoMark(c) {
+  const mc = { ...c, outline: true };
+  return `<path d="${ARCH}" fill="none" stroke="${c.g}" stroke-width="2.4"/>
+    <path d="${ARCH}" fill="none" stroke="${c.g}" stroke-width="1" ${at(100, 222, .94, 100, 222)}/>
+    <g ${at(100, 222, 1.1)}>${palace(mc)}</g>`;
+}
+const monoline = c => `<svg viewBox="0 0 200 330">${monoMark(c)}${stack({ ...c, w: c.gt }, 100, 272)}</svg>`;
+const monoIcon = (c, s) => icon(s, '0 0 200 230', monoMark(c));
+
+/* E. Peacock crest */
+function peacock(c) {
+  let fan = '';
+  for (let k = 0; k < 9; k++) {
+    const a = (-165 + k * 18.75), r = a * Math.PI / 180;
+    const ex = 34 + Math.cos(r) * 20, ey = 56 + Math.sin(r) * 20, tx = 34 + Math.cos(r) * 30, ty = 56 + Math.sin(r) * 30;
+    fan += `<ellipse cx="${ex}" cy="${ey}" rx="15" ry="5.5" transform="rotate(${a} ${ex} ${ey})" fill="${c.g}" fill-opacity=".9"/>
+      <circle cx="${tx}" cy="${ty}" r="4.4" fill="${c.fill}" stroke="${c.g}" stroke-width="1.4"/><circle cx="${tx}" cy="${ty}" r="2.2" fill="${c.acc}"/>`;
+  }
+  return `${fan}
+    <path d="M34,48 C42,40 42,30 40,22" fill="none" stroke="${c.acc}" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="34" cy="60" rx="10" ry="14" fill="${c.acc}"/>
+    <path d="M26,64 C18,70 12,76 8,80 C18,80 28,76 34,72 Z" fill="${c.g}"/>
+    <circle cx="41" cy="20" r="4.2" fill="${c.acc}"/><path d="M44.5,19 L50,21 L44.5,22.5 Z" fill="${c.g}"/>
+    <path d="M40,16 L37,8 M41,16 L41,7 M42,16 L45,8" stroke="${c.g}" stroke-width="1"/>
+    <circle cx="37" cy="7" r="1.6" fill="${c.g}"/><circle cx="41" cy="6" r="1.6" fill="${c.g}"/><circle cx="45" cy="7" r="1.6" fill="${c.g}"/>
+    <path d="M31,73 L29,82 M37,73 L39,82" stroke="${c.g}" stroke-width="1.6"/>`;
+}
+const peaMark = c => `<g transform="translate(66,0)">${archFrame(c)}<g ${at(100, 222, 1.1)}>${palace(c)}</g></g>
+  <g transform="translate(0,138) scale(1.02)">${peacock(c)}</g>
+  <g transform="translate(332,138) scale(-1.02,1.02)">${peacock(c)}</g>
+  <line x1="4" y1="222" x2="328" y2="222" stroke="${c.g}" stroke-width="1.6"/>`;
+const peacockCrest = c => `<svg viewBox="0 0 332 330">${peaMark(c)}${stack(c, 166, 272, 1.15)}</svg>`;
+const peaIcon = (c, s) => icon(s, '-4 -4 64 90', `<rect x="-4" y="-4" width="64" height="90" rx="10" fill="${c.fill}"/>${peacock(c)}`);
+
+/* F. Skyline wordmark — palace sits on the name, no arch */
+const skyline = c => `<svg viewBox="0 0 320 300">
+  <g ${at(160, 170, 1.25)}>${palace(c)}</g>
+  <text x="160" y="228" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="60" fill="${c.w}" textLength="276" lengthAdjust="spacingAndGlyphs">MITHAI</text>
+  <text x="160" y="260" text-anchor="middle" font-family="Cinzel" font-weight="600" font-size="22" fill="${c.gt}" letter-spacing="10">PALACE</text>
+  <path d="M60,252 l5,-5 l5,5 l-5,5 Z M250,252 l5,-5 l5,5 l-5,5 Z" fill="${c.g}"/>
+  <text x="160" y="284" text-anchor="middle" font-family="Cinzel" font-weight="500" font-size="10.5" fill="${c.w}" letter-spacing="4">TRADITIONALLY SWEET</text></svg>`;
+const skyIcon = (c, s) => icon(s, '0 0 200 200', `<rect width="200" height="200" rx="36" fill="${c.fill}" stroke="${c.g}" stroke-width="6"/><g ${at(100, 160, .9)}>${palace(c)}</g>`);
+
+/* G. Box-lid crest — rectangular frame for packaging */
+function lidMark(c, full = true) {
+  const corners = [[28, 28], [212, 28], [28, full ? 302 : 212], [212, full ? 302 : 212]].map(([x, y]) => petals(x, y, 20, c.w, c.g, 5)).join('');
+  const h = full ? 318 : 228;
+  return `<rect x="6" y="6" width="228" height="${h}" rx="4" fill="${c.fill}" stroke="${c.g}" stroke-width="3"/>
+    <rect x="14" y="14" width="212" height="${h - 16}" fill="none" stroke="${c.g}" stroke-width="1"/>${corners}
+    <path d="${ARCH} Z" fill="none" stroke="${c.g}" stroke-width="2.6" ${at(120, 212, .8, 100, 222)}/>
+    <g ${at(120, 211, .86)}>${palace(c)}</g>`;
+}
+const lid = c => `<svg viewBox="0 0 240 330">${lidMark(c)}${stack(c, 120, 254, .88)}</svg>`;
+const lidIcon = (c, s) => icon(s, '0 0 240 240', lidMark(c, false));
+
+const OPTIONS = [
+  { name:'Taj crest', full:tajCrest, icon:tajIcon,
+    desc:'<b>The building changes to a Taj-style monument:</b> one large dome, two slim minarets and small domed pavilions. It is the most recognisable Indian palace outline and simpler than five domes, so it stays clearer at small sizes. Same arch and lettering as the Heritage crest.' },
+  { name:'Medallion & ribbon', full:medallion, icon:medIcon,
+    desc:'<b>The palace sits in a round medallion with a maroon ribbon across it</b> carrying the name, like a royal seal or an old mithai box label. It feels traditional and "since forever". <b>Best for:</b> box lids and stickers. The round version without the ribbon makes a good profile picture.' },
+  { name:'Jewel crest', full:jewel, icon:jewelIcon,
+    desc:'<b>The arch is filled with solid maroon and the palace is drawn in gold on top</b>, like gold leaf on lacquer. It is the richest, most luxurious version and stands out well on cream packaging. <b>Best for:</b> premium gift boxes and printing with gold foil.' },
+  { name:'Monoline crest', full:monoline, icon:monoIcon,
+    desc:'<b>The Heritage crest drawn with only a single gold line</b>, with no filled shapes. Light and elegant, and ideal for <b>embossing, foil stamping, etched glass or window lettering</b>, where you can only use one colour.' },
+  { name:'Peacock crest', full:peacockCrest, icon:peaIcon,
+    desc:'<b>Two peacocks with fanned tails face the palace</b>, like guardians at a palace gate, a classic Indian royal symbol. It is more festive and decorative, and wider in shape. <b>Best for:</b> the shop sign, Diwali and wedding packaging, and the website hero. The peacock alone works as an icon.' },
+  { name:'Skyline wordmark', full:skyline, icon:skyIcon,
+    desc:'<b>No arch at all:</b> a bigger palace skyline sits directly on the word MITHAI, like buildings on a street. It is wider, so it fits <b>the fascia above the shopfront</b>, the website header and receipts better than the tall arch versions.' },
+  { name:'Box-lid crest', full:lid, icon:lidIcon,
+    desc:'<b>The whole crest inside a rectangular frame</b>, with double gold rules and a petal in each corner, laid out like an old-fashioned printed sweet box. <b>Best for:</b> printing straight onto box lids, carry bags and labels: the frame is already there.' },
+];
+
+document.getElementById('board').innerHTML = OPTIONS.map((o, i) => `
+  <section class="card">
+    <div class="head"><span class="num">Crest ${i + 1}</span><h2>${o.name}</h2></div>
+    <p class="desc">${o.desc}</p>
+    <div class="previews">
+      <div class="pv light">${o.full(LIGHT)}<span class="lbl">On cream</span></div>
+      <div class="pv dark">${o.full(DARK)}<span class="lbl">Reversed on maroon</span></div>
+      <div class="pv small">
+        <div class="row">${o.icon(LIGHT, 64)}${o.icon(LIGHT, 32)}${o.icon(LIGHT, 16)}</div>
+        <div class="row" style="background:var(--maroon)">${o.icon(DARK, 64)}${o.icon(DARK, 32)}</div>
+        <span class="lbl">Icon · 64 / 32 / 16 px</span>
+      </div>
+    </div>
+  </section>`).join('');
+</script>
+</body>
+</html>
