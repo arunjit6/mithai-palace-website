@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ArchFrame from '../components/ArchFrame.astro';
+import BoxCard from '../components/BoxCard.astro';
+import Button from '../components/Button.astro';
+import CtaButtons from '../components/CtaButtons.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import PlaceholderImage from '../components/PlaceholderImage.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { activeFestivals, boxSizes } from '../data/boxes';
+
+const steps = [
+  { title: 'Choose a size', text: 'Petite, Classic or Palace, from a small thank-you to the family table.' },
+  { title: 'Pick your sweets', text: 'Take our assortment, or fill it with your favourites from the menu.' },
+  { title: 'Collect it', text: 'Tell us the date you need it and we will have it packed and ready.' },
+];
+---
+<Layout title="Gift Boxes & Festivals" description="Mithai gift boxes in three sizes, plus festival boxes for Diwali, Eid, Raksha Bandhan, weddings and baby showers.">
+  <PageHero eyebrow="Gift boxes" title="Sweet Gifts for Every Occasion"
+    lead="Beautifully packed boxes of mithai for festivals, visits, weddings and thank-yous." />
+
+  <section class="section" aria-labelledby="sizes">
+    <div class="container-site">
+      <SectionHeading id="sizes" eyebrow="Three sizes" title="Choose Your Box" />
+      <ul class="grid gap-8 md:grid-cols-3">
+        {boxSizes.map((box, i) => <li><BoxCard box={box} highlight={i === 1} /></li>)}
+      </ul>
+
+      <ol class="mt-16 grid gap-8 md:grid-cols-3">
+        {steps.map((s, i) => (
+          <li class="flex gap-4">
+            <span class="flex size-11 shrink-0 items-center justify-center rounded-full border border-gold font-display text-lg font-semibold text-maroon">{i + 1}</span>
+            <div>
+              <h3 class="text-2xl">{s.title}</h3>
+              <p class="mt-1 text-ink-soft">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section bg-ivory/60" aria-labelledby="festivals">
+    <div class="container-site">
+      <SectionHeading id="festivals" eyebrow="Festival specials" title="Celebrate with Mithai"
+        lead="Pre-order early for the busy festival season." />
+      <div class="grid gap-16 lg:gap-24">
+        {activeFestivals().map((f, i) => (
+          <article id={f.id} class="grid items-center gap-8 md:grid-cols-2 md:gap-14">
+            <ArchFrame class:list={['mx-auto aspect-[5/6] w-full max-w-xs', i % 2 === 1 && 'md:order-2']}>
+              <PlaceholderImage label={`${f.name} box`} />
+            </ArchFrame>
+            <div class="text-center md:text-left">
+              <p class="eyebrow">Festival box</p>
+              <h3 class="mt-2 text-4xl">{f.name}</h3>
+              <p class="mt-4 text-lg text-ink-soft">{f.blurb}</p>
+              <CtaButtons class="mt-6 justify-center md:justify-start" enquiryLabel={`Enquire about ${f.name}`}
+                enquiryHref="/contact?type=gift-boxes" showVisitFallback={false}
+                whatsappText={`Hi Mithai Palace, I'd like to order ${f.name} boxes.`} />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section text-center" aria-labelledby="custom">
+    <div class="container-site">
+      <SectionHeading id="custom" eyebrow="Made for you" title="Custom & Bulk Boxes"
+        lead="Ordering for guests, staff or clients? We can prepare boxes in quantity for your date." />
+      <Button href="/catering" variant="secondary" icon="box">Catering & bulk orders</Button>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaButtons from '../components/CtaButtons.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import SweetCard from '../components/SweetCard.astro';
+import { menu } from '../data/menu';
+---
+<Layout title="Menu" description="Barfi, ladoo, halwa, milk sweets and savoury namkeen from Mithai Palace, North Mulgrave.">
+  <PageHero eyebrow="Our menu" title="Sweets & Savouries"
+    lead="Prices are per kilogram unless stated. Our selection changes with the seasons, so call ahead for today's sweets." />
+
+  <nav aria-label="Menu categories" class="sticky top-18 z-30 border-b border-gold/50 bg-cream/95 backdrop-blur lg:top-22">
+    <ul class="container-site flex gap-2 overflow-x-auto py-3 [scrollbar-width:none]">
+      {menu.map(c => (
+        <li class="shrink-0">
+          <a href={`#${c.id}`} class="block rounded-full border border-gold/70 px-4 py-1.5 font-serif text-lg whitespace-nowrap text-maroon hover:bg-ivory">
+            {c.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  {menu.map((category, i) => (
+    <section id={category.id} class:list={['section', i % 2 === 1 && 'bg-ivory/60']} aria-labelledby={`${category.id}-title`}>
+      <div class="container-site">
+        <SectionHeading id={`${category.id}-title`} eyebrow={`${String(i + 1).padStart(2, '0')} · ${category.name}`}
+          title={category.name} lead={category.blurb} />
+        <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {category.items.map(item => <li><SweetCard item={item} /></li>)}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <section class="section border-t border-gold/50 text-center">
+    <div class="container-site">
+      <SectionHeading eyebrow="Ordering" title="Can't See Your Favourite?"
+        lead="Many sweets can be made to order for festivals and events. Send us an enquiry and we'll let you know." />
+      <CtaButtons align="center" />
+    </div>
+  </section>
+</Layout>

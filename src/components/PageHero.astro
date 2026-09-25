@@ -1,0 +1,15 @@
+---
+/** Title band at the top of every inner page. */
+import PetalDivider from './PetalDivider.astro';
+interface Props { eyebrow: string; title: string; lead?: string }
+const { eyebrow, title, lead } = Astro.props;
+---
+<section class="lattice border-b border-gold/50">
+  <div class="container-site mx-auto max-w-3xl py-14 text-center lg:py-20">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="mt-4">{title}</h1>
+    {lead && <p class="lead mx-auto mt-5 max-w-2xl italic">{lead}</p>}
+    <PetalDivider class="mt-8" />
+    <slot />
+  </div>
+</section>
