@@ -1,17 +1,20 @@
 @import "tailwindcss";
 
-/* Brand tokens — see DESIGN.md §2 and §3. Change colours and fonts here only. */
+/* Brand tokens — see DESIGN.md §2 and §3. Change colours and fonts here only.
+   Surfaces, text and accents follow the sindhisweets.com palette; maroon + gold come from the logo. */
 @theme {
-  --color-cream: #FDF8EC;
-  --color-ivory: #F6EDD8;
+  --color-cream: #FAF2EA;   /* page background (blush) */
+  --color-ivory: #F8E6DD;   /* panels and cards (peach) */
+  --color-blush: #F2CBC0;   /* soft buttons */
+  --color-crimson: #AB0218; /* icons and accents */
   --color-maroon: #6E0C16;
   --color-maroon-light: #8E1A24;
   --color-maroon-deep: #4E0810;
   --color-gold: #B08A4C;
   --color-gold-light: #D9BD86;
   --color-gold-deep: #7A5C24;
-  --color-ink: #2A1A14;
-  --color-ink-soft: #5C4A40;
+  --color-ink: #2B2A29;
+  --color-ink-soft: #6B6460;
 
   --font-display: "Cinzel", Georgia, serif;
   --font-serif: "Cormorant Garamond", Georgia, serif;
@@ -32,7 +35,7 @@
   }
   h1, h2 {
     font-family: var(--font-display);
-    color: var(--color-maroon);
+    color: var(--color-ink);
     font-weight: 600;
     letter-spacing: .02em;
     line-height: 1.15;
@@ -43,7 +46,7 @@
   h3 {
     font-family: var(--font-serif);
     font-weight: 600;
-    color: var(--color-maroon);
+    color: var(--color-ink);
     line-height: 1.2;
   }
   ::selection { background: var(--color-gold-light); color: var(--color-ink); }
@@ -71,7 +74,7 @@
     font-weight: 600;
     letter-spacing: .25em;
     text-transform: uppercase;
-    color: var(--color-gold-deep);
+    color: var(--color-crimson);
   }
 
   .lead {
@@ -83,7 +86,7 @@
 
   .card {
     background: var(--color-ivory);
-    border: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-crimson) 14%, transparent);
     border-radius: 6px;
     transition: transform .2s ease-out, box-shadow .2s ease-out;
   }
@@ -109,6 +112,9 @@
   .btn-primary:hover { background: var(--color-maroon-light); box-shadow: inset 0 0 0 1px var(--color-gold-light); }
   .btn-secondary { border: 1.5px solid var(--color-maroon); color: var(--color-maroon); }
   .btn-secondary:hover { background: var(--color-ivory); }
+  /* Soft pink, like the reference shop's "Add to bag" */
+  .btn-soft { background: var(--color-blush); color: var(--color-ink); }
+  .btn-soft:hover { background: var(--color-maroon); color: var(--color-cream); }
   /* For maroon backgrounds */
   .btn-light { background: var(--color-cream); color: var(--color-maroon); }
   .btn-light:hover { background: var(--color-ivory); box-shadow: inset 0 0 0 1px var(--color-gold); }

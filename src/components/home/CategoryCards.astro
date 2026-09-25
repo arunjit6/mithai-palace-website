@@ -12,12 +12,12 @@ import { menu } from '../../data/menu';
     {menu.map(c => (
       <li class="w-[62%] shrink-0 snap-start sm:w-[38%] lg:w-auto">
         <a href={`/menu#${c.id}`} class="group block text-center">
-          <div class="aspect-square overflow-hidden rounded-sm border border-gold/40">
+          <div class="aspect-square overflow-hidden rounded-sm">
             <div class="h-full w-full transition-transform duration-500 group-hover:scale-[1.04]">
-              <Photo name={`category-${c.id}`} alt={c.name} tone="rich" showLabel={false} />
+              <Photo name={`category-${c.id}`} alt={c.name} showLabel={false} />
             </div>
           </div>
-          <span class="mt-4 block text-2xl font-semibold text-maroon group-hover:text-maroon-light" style="font-family: var(--font-serif)">{c.name}</span>
+          <span class="mt-4 block text-2xl font-semibold text-ink group-hover:text-crimson" style="font-family: var(--font-serif)">{c.name}</span>
           <span class="mt-0.5 block text-sm text-ink-soft">{c.items.length} varieties</span>
         </a>
       </li>

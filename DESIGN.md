@@ -15,24 +15,27 @@ Keywords: Mughal arch · gold leaf · ivory · hand-made · celebration · trust
 
 ## 2. Colour palette
 
-Sampled from the logo, then tuned for contrast on the cream background.
+Surfaces, text and accents follow the sindhisweets.com palette (sampled from their site,
+2026-09-25); maroon and gold come from the Mithai Palace logo.
 
-| Token | Hex | Role | Contrast on cream |
+| Token | Hex | Role | Contrast on page bg |
 |---|---|---|---|
-| `cream` | `#FDF8EC` | Page background | — |
-| `ivory` | `#F6EDD8` | Alternate section band, card fill | — |
-| `maroon` | `#6E0C16` | Headings, primary buttons, logo wordmark | 11.5 : 1 |
-| `maroon-light` | `#8E1A24` | Button hover, links | 8.5 : 1 |
-| `gold` | `#B08A4C` | Decoration only: borders, dividers, icons, arches | 3.0 : 1 (non-text) |
-| `gold-deep` | `#7A5C24` | Gold-coloured **text** (eyebrows, prices) | 5.9 : 1 |
-| `ink` | `#2A1A14` | Body text | 15.8 : 1 |
-| `ink-soft` | `#5C4A40` | Secondary text, captions | 7.9 : 1 |
+| `cream` | `#FAF2EA` | Page background (blush) | — |
+| `ivory` | `#F8E6DD` | Panels, cards, hero, promise box (peach) | — |
+| `blush` | `#F2CBC0` | Soft buttons ("Enquire", like "Add to bag") | — |
+| `ink` | `#2B2A29` | Headings and body text | 12.9 : 1 |
+| `ink-soft` | `#6B6460` | Secondary text, captions | 5.2 : 1 |
+| `crimson` | `#AB0218` | Icons, eyebrows, prices, tab underline | 6.9 : 1 |
+| `maroon` | `#6E0C16` | Primary buttons, logo wordmark, footer, ribbon | 11.0 : 1 |
+| `maroon-light` | `#8E1A24` | Button hover, links | 8.4 : 1 |
+| `gold` | `#B08A4C` | Decoration only: hairlines, dividers, petal outline | 3.0 : 1 (non-text) |
+| `gold-deep` | `#7A5C24` | Logo lockup tagline | 5.6 : 1 |
 
 Rules
-- Gold `#B08A4C` is **never** used for text smaller than 24px — use `gold-deep`.
-- On maroon backgrounds, text is `cream`; gold decoration still allowed.
-- One primary (maroon filled) button per screen section; secondary buttons are outlined in maroon.
-- No pure white or pure black anywhere.
+- Gold is never used for body text; use `crimson` for small accent text.
+- On maroon backgrounds, text is `cream`.
+- One primary (maroon) button per section; secondary buttons are outlined; "Enquire" uses the soft `blush` fill.
+- The logo is shown as supplied, with no arch frame around it (owner request, 2026-09-25).
 
 ## 3. Typography
 

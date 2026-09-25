@@ -17,7 +17,7 @@ const occasions: { icon: IconName; title: string; text: string; href: string; ct
       {occasions.map(o => (
         <li>
           <a href={o.href} class="card group flex h-full flex-col items-center px-6 py-10 text-center">
-            <span class="flex size-16 items-center justify-center rounded-full border border-gold text-maroon transition-colors group-hover:bg-maroon group-hover:text-cream">
+            <span class="flex size-16 items-center justify-center rounded-full border border-crimson/30 text-crimson transition-colors group-hover:bg-maroon group-hover:text-cream">
               <Icon name={o.icon} size={30} />
             </span>
             <h3 class="mt-6 text-3xl">{o.title}</h3>

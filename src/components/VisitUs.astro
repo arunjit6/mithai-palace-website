@@ -13,14 +13,14 @@ import { fullAddress, hoursRows, mapEmbedUrl, mapLinkUrl } from '../lib/format';
 
       <dl class="grid gap-6">
         <div class="flex gap-4">
-          <dt><Icon name="pin" size={24} class="text-gold-deep" /><span class="sr-only">Address</span></dt>
+          <dt><Icon name="pin" size={24} class="text-crimson" /><span class="sr-only">Address</span></dt>
           <dd>
             <a href={mapLinkUrl(site)} target="_blank" rel="noopener" class="link text-lg">{fullAddress(site)}</a>
             {!site.address.confirmed && <span class="mt-1 block text-sm text-ink-soft">Address to be confirmed</span>}
           </dd>
         </div>
         <div class="flex gap-4">
-          <dt><Icon name="clock" size={24} class="text-gold-deep" /><span class="sr-only">Opening hours</span></dt>
+          <dt><Icon name="clock" size={24} class="text-crimson" /><span class="sr-only">Opening hours</span></dt>
           <dd class="grid gap-1 text-lg">
             {hoursRows(site.hours).map(row => (
               <span class="flex flex-wrap gap-x-4"><span class="text-ink-soft">{row.days}</span><span>{row.open}</span></span>

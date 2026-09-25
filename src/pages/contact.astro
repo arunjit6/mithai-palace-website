@@ -26,16 +26,16 @@ const mail = mailHref(site.email);
         <div>
           <p class="eyebrow">Get in touch</p>
           <ul class="mt-4 grid gap-4 text-lg">
-            {tel && <li><a href={tel} class="link inline-flex items-center gap-3"><Icon name="phone" class="text-gold-deep" />{site.phone}</a></li>}
-            {wa && <li><a href={wa} target="_blank" rel="noopener" class="link inline-flex items-center gap-3"><Icon name="whatsapp" class="text-gold-deep" />WhatsApp us</a></li>}
-            {mail && <li><a href={mail} class="link inline-flex items-center gap-3"><Icon name="mail" class="text-gold-deep" />{site.email}</a></li>}
+            {tel && <li><a href={tel} class="link inline-flex items-center gap-3"><Icon name="phone" class="text-crimson" />{site.phone}</a></li>}
+            {wa && <li><a href={wa} target="_blank" rel="noopener" class="link inline-flex items-center gap-3"><Icon name="whatsapp" class="text-crimson" />WhatsApp us</a></li>}
+            {mail && <li><a href={mail} class="link inline-flex items-center gap-3"><Icon name="mail" class="text-crimson" />{site.email}</a></li>}
             {!tel && !wa && !mail && <li class="text-ink-soft">Phone, WhatsApp and email details are coming soon.</li>}
           </ul>
         </div>
         <div class="hairline"></div>
         <div>
           <p class="eyebrow">Shop</p>
-          <p class="mt-4 flex gap-3 text-lg"><Icon name="pin" class="mt-1 shrink-0 text-gold-deep" />{fullAddress(site)}</p>
+          <p class="mt-4 flex gap-3 text-lg"><Icon name="pin" class="mt-1 shrink-0 text-crimson" />{fullAddress(site)}</p>
           {!site.address.confirmed && <p class="mt-1 pl-8 text-sm text-ink-soft">Address to be confirmed</p>}
         </div>
         <div>

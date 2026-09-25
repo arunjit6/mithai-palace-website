@@ -13,7 +13,7 @@ import { menu } from '../../data/menu';
     <SectionHeading id="savour" eyebrow="From our kitchen" title="Savour the Best of Mithai Palace" />
 
     <div role="tablist" aria-label="Sweet categories" id="product-tabs"
-      class="mx-auto -mt-4 mb-10 flex max-w-full gap-1 overflow-x-auto border-b border-gold/50 [scrollbar-width:none] sm:w-fit sm:justify-center">
+      class="mx-auto -mt-4 mb-10 flex max-w-full gap-1 overflow-x-auto border-b border-crimson/20 [scrollbar-width:none] sm:w-fit sm:justify-center">
       {menu.map((c, i) => (
         <button role="tab" type="button" id={`tab-${c.id}`} aria-controls={`panel-${c.id}`} aria-selected={i === 0 ? 'true' : 'false'}
           tabindex={i === 0 ? 0 : -1}
@@ -39,10 +39,10 @@ import { menu } from '../../data/menu';
 
 <style>
   .tab { position: relative; font-weight: 600; transition: color .15s ease-out; }
-  .tab:hover { color: var(--color-maroon); }
-  .tab[aria-selected='true'] { color: var(--color-maroon); }
+  .tab:hover { color: var(--color-crimson); }
+  .tab[aria-selected='true'] { color: var(--color-ink); }
   .tab[aria-selected='true']::after {
-    content: ''; position: absolute; left: .75rem; right: .75rem; bottom: -1px; height: 2px; background: var(--color-maroon);
+    content: ''; position: absolute; left: .75rem; right: .75rem; bottom: -1px; height: 2px; background: var(--color-crimson);
   }
 </style>
 

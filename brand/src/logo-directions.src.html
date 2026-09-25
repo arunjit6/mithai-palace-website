@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mithai Palace New Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=Marcellus&family=Rozha+One&family=Yeseva+One&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#FBF7EF; color:#2A1A14; font:400 1rem/1.6 Inter, system-ui, sans-serif; }
+  * { box-sizing:border-box; }
+  header, main { max-width:1200px; margin:0 auto; padding-left:16px; padding-right:16px; }
+  header { padding-top:3rem; }
+  .eyebrow { font:600 .75rem Inter, sans-serif; letter-spacing:.2em; color:#7A5C24; text-transform:uppercase; }
+  h1 { font:700 clamp(2rem,5vw,3rem) 'Cormorant Garamond', serif; color:#6E0C16; margin:.3rem 0 .5rem; }
+  header p { max-width:68ch; color:#5C4A40; }
+  main { padding-top:1rem; padding-bottom:4rem; display:grid; gap:2rem; }
+  .card { background:#fff9f0; border:1px solid #d9c6a0; border-radius:8px; overflow:hidden; }
+  .head { padding:1.25rem 1.5rem .25rem; display:flex; gap:.9rem; align-items:baseline; flex-wrap:wrap; }
+  .num { font:600 .75rem Inter; letter-spacing:.15em; color:#7A5C24; text-transform:uppercase; }
+  h2 { font:700 1.6rem 'Cormorant Garamond', serif; margin:0; color:#2A1A14; }
+  .desc { padding:0 1.5rem .75rem; color:#5C4A40; max-width:78ch; margin:0; }
+  .desc b { color:#2A1A14; font-weight:600; }
+  .meta { padding:0 1.5rem 1rem; display:flex; gap:1.25rem; flex-wrap:wrap; align-items:center; font-size:.8rem; color:#5C4A40; }
+  .sw { display:inline-flex; gap:4px; }
+  .sw i { width:22px; height:22px; border-radius:50%; border:1px solid rgb(0 0 0 / .12); display:inline-block; }
+  .previews { display:grid; grid-template-columns:1.3fr 1fr .6fr; border-top:1px solid #e6d8bb; }
+  .pv { padding:1.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.75rem; min-height:260px; }
+  .pv > svg { width:100%; height:auto; max-height:300px; }
+  .pv.small { gap:1rem; border-left:1px solid #e6d8bb; background:#fff; }
+  .row { display:flex; gap:14px; align-items:center; padding:8px; border-radius:6px; }
+  .lbl { font:500 .7rem Inter; letter-spacing:.08em; text-transform:uppercase; opacity:.75; }
+  @media (max-width:760px) { .previews { grid-template-columns:1fr; } .pv.small { border-left:0; border-top:1px solid #e6d8bb; min-height:0; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">Brand exploration · round 2</div>
+  <h1>Seven new directions</h1>
+  <p>Unlike round 1, these do not start from the palace illustration. Each one has its own symbol, colours and fonts, to show how differently Mithai Palace could look. Each is shown on its light and dark colours, at icon size, and with its colours and fonts listed. You can also mix ideas: for example the jalebi M with the maroon and gold you already use.</p>
+</header>
+<main id="board"></main>
+<script>
+let uid = 0;
+const PETAL = 'M50 47 C40 38 37 22 50 6 C63 22 60 38 50 47 Z';
+const petals = (cx, cy, size, fill, stroke, sw = 4) => {
+  let p = ''; for (const r of [0,90,180,270]) p += `<path d="${PETAL}" transform="rotate(${r} 50 50)"/>`;
+  return `<g transform="translate(${cx-size/2},${cy-size/2}) scale(${size/100})" fill="${fill}" stroke="${stroke}" stroke-width="${sw}">${p}</g>`;
+};
+// deterministic pseudo-random
+const rnd = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
+function dots(cx, cy, r, dr, color, op = .5, step = 6) {
+  let out = '';
+  for (let y = cy - r; y <= cy + r; y += step) for (let x = cx - r; x <= cx + r; x += step) {
+    const ox = x + (((y - cy) / step) % 2 ? step / 2 : 0);
+    if ((ox - cx) ** 2 + (y - cy) ** 2 < (r - dr) ** 2) out += `<circle cx="${ox.toFixed(1)}" cy="${y}" r="${dr}" fill="${color}" fill-opacity="${op}"/>`;
+  }
+  return out;
+}
+
+/* A — Kaju katli diamond */
+function katliMark(c, detail = true) {
+  const R = rnd(7); let crinkle = '';
+  if (detail) for (let i = 0; i < 70; i++) {
+    const x = 60 + R() * 120, y = 50 + R() * 120, a = R() * 180, l = 5 + R() * 9;
+    if (Math.abs(x - 120) + Math.abs(y - 110) < 72) crinkle += `<line x1="${x}" y1="${y}" x2="${x + l}" y2="${y}" transform="rotate(${a} ${x} ${y})" stroke="${c.accent2}" stroke-width="1.2" stroke-linecap="round"/>`;
+  }
+  return `<path d="M120,20 L210,110 L120,200 L30,110 Z" fill="${c.main}"/>
+    <path d="M120,34 L196,110 L120,186 L44,110 Z" fill="${c.accent}"/>${crinkle}
+    <text x="120" y="140" text-anchor="middle" font-family="Cormorant Garamond" font-weight="700" font-size="92" fill="${c.main}">M</text>`;
+}
+const katli = c => `<svg viewBox="0 0 240 300">${katliMark(c)}
+  <text x="120" y="250" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="25" fill="${c.text}" letter-spacing="2">MITHAI PALACE</text>
+  <text x="120" y="276" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="18" fill="${c.text2}">Traditionally sweet</text></svg>`;
+const katliIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="26 16 188 188">${katliMark(c, s > 40)}</svg>`;
+
+/* B — Jalebi M */
+const JM = 'M52,176 C30,176 26,150 44,146 C56,144 60,156 52,160 M52,176 V78 C52,52 80,48 90,70 L120,134 L150,70 C160,48 188,52 188,78 V176 C188,196 214,196 214,176 C214,160 196,156 194,168';
+function jalebiMark(c, sw = 18) {
+  return `<path d="${JM}" fill="none" stroke="${c.main}" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${JM}" fill="none" stroke="${c.accent}" stroke-width="${sw / 4.5}" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".8" transform="translate(-2,-3)"/>`;
+}
+const jalebi = c => `<svg viewBox="0 0 520 220">
+  <g transform="translate(6,10) scale(.95)">${jalebiMark(c)}</g>
+  <text x="236" y="118" font-family="Yeseva One" font-size="50" fill="${c.text}" textLength="268" lengthAdjust="spacingAndGlyphs">Mithai Palace</text>
+  <text x="238" y="152" font-family="Inter" font-weight="600" font-size="13" fill="${c.text2}" textLength="264" lengthAdjust="spacing">TRADITIONALLY SWEET</text></svg>`;
+const jalebiIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="0 0 240 240"><rect width="240" height="240" rx="48" fill="${c.bg}"/><g transform="translate(6,6)">${jalebiMark(c, s > 40 ? 18 : 24)}</g></svg>`;
+
+/* C — Crown of ladoos */
+function crownMark(c, detail = true) {
+  const ladoo = (x, y, r) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${c.accent}"/>${detail ? dots(x, y, r, 1.3, c.accent2, .6, 4.5) : ''}`;
+  return `<path d="M52,150 L38,74 L86,112 L120,52 L154,112 L202,74 L188,150 Z" fill="${c.accent}"/>
+    <path d="M52,150 L38,74 L86,112 L120,52 L154,112 L202,74 L188,150 Z" fill="none" stroke="${c.main}" stroke-width="2" stroke-opacity=".35"/>
+    ${ladoo(38, 64, 13)}${ladoo(120, 40, 16)}${ladoo(202, 64, 13)}
+    <rect x="48" y="148" width="144" height="26" rx="3" fill="${c.main}"/>
+    <circle cx="84" cy="161" r="5" fill="${c.accent}"/><circle cx="120" cy="161" r="6.5" fill="${c.accent}"/><circle cx="156" cy="161" r="5" fill="${c.accent}"/>
+    ${petals(120, 116, 34, c.main, c.main, 1)}`;
+}
+const crown = c => `<svg viewBox="0 0 240 290">${crownMark(c)}
+  <text x="120" y="232" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="27" fill="${c.text}" letter-spacing="1">MITHAI PALACE</text>
+  <text x="120" y="260" text-anchor="middle" font-family="Cinzel" font-weight="500" font-size="10.5" fill="${c.text2}" letter-spacing="4">TRADITIONALLY SWEET</text></svg>`;
+const crownIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="18 18 204 180">${crownMark(c, s > 40)}</svg>`;
+
+/* D — Jharokha window with jaali */
+function jharokhaMark(c, detail = true) {
+  const id = 'j' + (uid++);
+  const W = 'M60,250 V132 C60,96 94,78 120,46 C146,78 180,96 180,132 V250 Z';
+  let jaali = '';
+  if (detail) for (let y = 40; y < 260; y += 16) for (let x = 56; x < 190; x += 16)
+    jaali += `<path d="M${x},${y-7} L${x+7},${y} L${x},${y+7} L${x-7},${y} Z" fill="none" stroke="${c.accent}" stroke-width="1.4"/><circle cx="${x+8}" cy="${y+8}" r="1.6" fill="${c.accent}"/>`;
+  return `<defs><clipPath id="${id}"><path d="${W}"/></clipPath></defs>
+    <path d="M40,256 H200 V270 H40 Z" fill="${c.accent}"/>
+    <path d="${W}" fill="${c.main}"/>
+    <g clip-path="url(#${id})" opacity=".55">${jaali}</g>
+    <path d="${W}" fill="none" stroke="${c.accent}" stroke-width="5"/>
+    <path d="M44,132 H196 L186,120 H54 Z" fill="${c.accent}"/>
+    <path d="M120,24 v18" stroke="${c.accent}" stroke-width="4"/><circle cx="120" cy="22" r="6" fill="${c.accent}"/>`;
+}
+const jharokha = c => `<svg viewBox="0 0 520 290">
+  <g transform="translate(0,4)">${jharokhaMark(c)}</g>
+  <text x="230" y="140" font-family="Marcellus" font-size="50" fill="${c.text}">MITHAI</text>
+  <text x="230" y="192" font-family="Marcellus" font-size="50" fill="${c.text}">PALACE</text>
+  <line x1="232" y1="214" x2="490" y2="214" stroke="${c.text2}" stroke-width="1.2"/>
+  <text x="232" y="240" font-family="Cormorant Garamond" font-style="italic" font-weight="500" font-size="22" fill="${c.text2}">Traditionally sweet</text></svg>`;
+const jharokhaIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="0 10 240 270">${jharokhaMark(c, s > 40)}</svg>`;
+
+/* E — Vintage halwai signboard */
+function board(c) {
+  const B = 'M34,20 H486 A14,14 0 0 0 500,34 V186 A14,14 0 0 0 486,200 H34 A14,14 0 0 0 20,186 V34 A14,14 0 0 0 34,20 Z';
+  return `<svg viewBox="0 0 520 220">
+    <path d="${B}" fill="${c.main}"/>
+    <path d="${B}" fill="none" stroke="${c.accent}" stroke-width="3" transform="translate(260,110) scale(.95,.89) translate(-260,-110)"/>
+    <path d="${B}" fill="none" stroke="${c.accent}" stroke-width="1" transform="translate(260,110) scale(.93,.85) translate(-260,-110)"/>
+    <text x="260" y="66" text-anchor="middle" font-family="Rozha One" font-size="26" fill="${c.text2}">मिठाई पैलेस</text>
+    <text x="263" y="133" text-anchor="middle" font-family="Rozha One" font-size="62" fill="${c.accent2}" textLength="380" lengthAdjust="spacingAndGlyphs">MITHAI PALACE</text>
+    <text x="260" y="130" text-anchor="middle" font-family="Rozha One" font-size="62" fill="${c.accent}" textLength="380" lengthAdjust="spacingAndGlyphs">MITHAI PALACE</text>
+    <text x="260" y="170" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="${c.text2}" letter-spacing="6">TRADITIONALLY SWEET</text>
+    ${petals(58, 110, 30, c.accent, c.accent, 1)}${petals(462, 110, 30, c.accent, c.accent, 1)}</svg>`;
+}
+const boardIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect width="100" height="100" rx="16" fill="${c.main}"/><rect x="6" y="6" width="88" height="88" rx="11" fill="none" stroke="${c.accent}" stroke-width="${s > 40 ? 2 : 4}"/>
+  <text x="50" y="70" text-anchor="middle" font-family="Rozha One" font-size="58" fill="${c.accent}">म</text></svg>`;
+
+/* F — Modern boutique */
+function ladooMark(c, detail = true) {
+  const R = rnd(3); let pista = '';
+  const n = detail ? 9 : 4;
+  for (let i = 0; i < n; i++) {
+    const a = -2.6 + (i / (n - 1)) * 2.2 + (R() - .5) * .2, rr = 18 + R() * 8;
+    const x = 50 + Math.cos(a) * rr, y = 50 + Math.sin(a) * rr * .8;
+    pista += `<rect x="${x - 5}" y="${y - 1.8}" width="10" height="3.6" rx="1.8" fill="${c.accent2}" transform="rotate(${R() * 180} ${x} ${y})"/>`;
+  }
+  return `<circle cx="50" cy="50" r="40" fill="${c.accent}"/>${detail ? dots(50, 50, 40, 1.4, c.main, .12, 6) : ''}${pista}`;
+}
+const boutique = c => `<svg viewBox="0 0 520 170">
+  <g transform="translate(18,30) scale(1.1)">${ladooMark(c)}</g>
+  <text x="152" y="96" font-family="Fraunces" font-weight="600" font-size="58" fill="${c.text}" letter-spacing="-1">mithai palace</text>
+  <text x="155" y="130" font-family="Inter" font-weight="500" font-size="14" fill="${c.text2}" letter-spacing="4">traditionally sweet</text></svg>`;
+const boutiqueIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect width="100" height="100" rx="50" fill="${c.bg}"/><g transform="translate(8,8) scale(.84)">${ladooMark(c, s > 40)}</g></svg>`;
+
+/* G — Devanagari-led with marigold toran */
+function toran(c, x0, x1, y, sag, n) {
+  let out = `<path d="M${x0},${y} Q${(x0 + x1) / 2},${y + sag * 2} ${x1},${y}" fill="none" stroke="${c.accent2}" stroke-width="2"/>`;
+  for (let i = 0; i <= n; i++) {
+    const t = i / n, x = x0 + (x1 - x0) * t, yy = y + 4 * sag * t * (1 - t);
+    out += `<circle cx="${x}" cy="${yy}" r="7" fill="${i % 2 ? c.accent : c.main}"/>`;
+    if (i % 3 === 1) out += `<path d="M${x},${yy + 7} q-6,10 0,18 q6,-8 0,-18 Z" fill="${c.accent2}"/>`;
+  }
+  return out;
+}
+const devanagari = c => `<svg viewBox="0 0 440 290">
+  ${toran(c, 40, 400, 26, 22, 18)}
+  <text x="220" y="178" text-anchor="middle" font-family="Rozha One" font-size="118" fill="${c.text}">मिठाई</text>
+  <line x1="60" y1="212" x2="380" y2="212" stroke="${c.accent}" stroke-width="1.5"/>
+  <text x="220" y="246" text-anchor="middle" font-family="Cinzel" font-weight="700" font-size="28" fill="${c.text}" letter-spacing="7">PALACE</text>
+  <text x="220" y="274" text-anchor="middle" font-family="Inter" font-weight="500" font-size="12" fill="${c.text2}" letter-spacing="5">MITHAI PALACE · TRADITIONALLY SWEET</text></svg>`;
+const devIcon = (c, s) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="${c.bg}"/>
+  <text x="50" y="72" text-anchor="middle" font-family="Rozha One" font-size="${s > 40 ? 50 : 60}" fill="${c.text}">मि</text>
+  ${s > 40 ? `<circle cx="22" cy="16" r="5" fill="${c.accent}"/><circle cx="36" cy="20" r="5" fill="${c.main}"/><circle cx="50" cy="22" r="5" fill="${c.accent}"/><circle cx="64" cy="20" r="5" fill="${c.main}"/><circle cx="78" cy="16" r="5" fill="${c.accent}"/>` : ''}</svg>`;
+
+const OPTIONS = [
+  { name:'Kaju katli diamond', full:katli, icon:katliIcon, fonts:'Cinzel + Cormorant Garamond',
+    light:{ bg:'#FBF7F2', main:'#5A0F1E', accent:'#D6D3CB', accent2:'#B4AFA4', text:'#5A0F1E', text2:'#6B6259' },
+    dark: { bg:'#3A0913', main:'#2A0610', accent:'#D6D3CB', accent2:'#B4AFA4', text:'#EFEDE8', text2:'#C9C4BA' },
+    desc:'<b>The symbol is a kaju katli:</b> a maroon diamond covered in crinkled silver leaf (varq), with an M in the middle. It feels premium and modern, and silver replaces gold, which sets you apart from the many maroon-and-gold sweet shops. <b>Best for:</b> gift boxes (silver foil on maroon card looks very expensive), social media and signage.' },
+  { name:'Jalebi M', full:jalebi, icon:jalebiIcon, fonts:'Yeseva One + Inter',
+    light:{ bg:'#FFF6E6', main:'#E07B16', accent:'#FBC77A', text:'#4A2511', text2:'#9A5A1C' },
+    dark: { bg:'#4A2511', main:'#F08A22', accent:'#FFD89A', text:'#FFF1DA', text2:'#FBC77A' },
+    desc:'<b>An M drawn as one piped jalebi line</b>, with a curl at each end and a glossy syrup highlight. It is warm, handmade and friendly, and shows that sweets are made here. <b>Best for:</b> a shop that wants to feel welcoming rather than formal; it is also very memorable on Instagram and delivery apps.' },
+  { name:'Crown of ladoos', full:crown, icon:crownIcon, fonts:'Cinzel',
+    light:{ bg:'#FAF6FB', main:'#3E1F47', accent:'#C9A04E', accent2:'#8C6A26', text:'#3E1F47', text2:'#8C6A26' },
+    dark: { bg:'#3E1F47', main:'#2A1231', accent:'#D8B25E', accent2:'#8C6A26', text:'#F6EEF8', text2:'#D8B25E' },
+    desc:'<b>"Palace" becomes royalty:</b> a gold crown with a boondi ladoo on each point and the four-petal flower from your current logo. It keeps the regal feel with a much simpler symbol. Shown in royal plum and gold for contrast, but it would also work in your maroon. <b>Best for:</b> festive and wedding orders.' },
+  { name:'Jharokha window', full:jharokha, icon:jharokhaIcon, fonts:'Marcellus + Cormorant Garamond',
+    light:{ bg:'#F7F3EA', main:'#0F4C5C', accent:'#C9A45C', text:'#0F4C5C', text2:'#8A6A2C' },
+    dark: { bg:'#0B3743', main:'#135E70', accent:'#D8B770', text:'#F4EEDF', text2:'#D8B770' },
+    desc:'<b>A Rajasthani palace window</b> with a gold lattice screen (jaali) and a canopy on top: a quieter kind of "palace". The peacock teal is unusual for a sweet shop, which makes it stand out on a busy street and complements the colours of the mithai. <b>Best for:</b> a calm, upmarket café-sweet-shop look.' },
+  { name:'Vintage halwai signboard', full:board, icon:boardIcon, fonts:'Rozha One (Latin + Devanagari) + Inter',
+    light:{ bg:'#FFF8EC', main:'#B0124F', accent:'#F4B400', accent2:'#0E4D3A', text:'#B0124F', text2:'#FFE9C2' },
+    dark: { bg:'#0E4D3A', main:'#B0124F', accent:'#F4B400', accent2:'#07261D', text:'#F4B400', text2:'#FFE9C2' },
+    desc:'<b>Bold, colourful Bombay-style shop signage:</b> rani pink, marigold and bottle green, with the name in Hindi above the English. Nostalgic and fun, and the kind of sign people photograph. <b>Best for:</b> the shopfront, a street-food or chaat counter, and bold social media posts. The icon is the Hindi letter म.' },
+  { name:'Modern boutique', full:boutique, icon:boutiqueIcon, fonts:'Fraunces + Inter',
+    light:{ bg:'#FBF4EF', main:'#3B2320', accent:'#EDB3AC', accent2:'#8FA35A', text:'#3B2320', text2:'#8C6B63' },
+    dark: { bg:'#3B2320', main:'#EDB3AC', accent:'#EDB3AC', accent2:'#A9BD6E', text:'#FBF4EF', text2:'#EDB3AC' },
+    desc:'<b>A modern patisserie look</b>: the name in lowercase, a soft pink ladoo with pistachio slivers as the symbol, and pink, pistachio and cocoa colours. It looks like a modern dessert shop and appeals to younger and non-Indian customers. <b>Best for:</b> making mithai feel like a fashionable gift, much like macarons. The biggest change from your current look.' },
+  { name:'Hindi-first with toran', full:devanagari, icon:devIcon, fonts:'Rozha One + Cinzel + Inter',
+    light:{ bg:'#FFF8EC', main:'#7A0F1C', accent:'#F2A900', accent2:'#3E7A3A', text:'#7A0F1C', text2:'#7A5C24' },
+    dark: { bg:'#7A0F1C', main:'#F7D27A', accent:'#F2A900', accent2:'#7FB36A', text:'#FFF1DA', text2:'#F7D27A' },
+    desc:'<b>मिठाई is the main text</b>, with a marigold garland (toran) above like a shop decorated for Diwali, and "PALACE" underneath in English. It is proudly Indian and works for both Hindi and English readers. <b>Best for:</b> an authentic, community-favourite feel. Confirm the Hindi spelling and lettering with the owner.' },
+];
+
+const swatches = p => `<span class="sw">${[...new Set([p.bg, p.main, p.accent, p.accent2, p.text].filter(Boolean))].map(h => `<i title="${h}" style="background:${h}"></i>`).join('')}</span>`;
+document.getElementById('board').innerHTML = OPTIONS.map((o, i) => `
+  <section class="card">
+    <div class="head"><span class="num">Direction ${String.fromCharCode(65 + i)}</span><h2>${o.name}</h2></div>
+    <p class="desc">${o.desc}</p>
+    <div class="meta">${swatches(o.light)}<span>Type: ${o.fonts}</span></div>
+    <div class="previews">
+      <div class="pv" style="background:${o.light.bg};color:${o.light.text}">${o.full(o.light)}<span class="lbl">Light</span></div>
+      <div class="pv" style="background:${o.dark.bg};color:${o.dark.text}">${o.full(o.dark)}<span class="lbl">Dark</span></div>
+      <div class="pv small">
+        <div class="row" style="background:${o.light.bg}">${o.icon(o.light, 64)}${o.icon(o.light, 32)}${o.icon(o.light, 16)}</div>
+        <div class="row" style="background:${o.dark.bg}">${o.icon(o.dark, 64)}${o.icon(o.dark, 32)}</div>
+        <span class="lbl">Icon · 64 / 32 / 16 px</span>
+      </div>
+    </div>
+  </section>`).join('');
+</script>
+</body>
+</html>
