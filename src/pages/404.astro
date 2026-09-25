@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import PetalMark from '../components/PetalMark.astro';
+---
+<Layout title="Page Not Found" description="Sorry, this page could not be found.">
+  <section class="lattice section">
+    <div class="container-site mx-auto max-w-xl py-10 text-center">
+      <PetalMark size={64} class="mx-auto" />
+      <p class="eyebrow mt-6">Error 404</p>
+      <h1 class="mt-3">This Page Has Melted Away</h1>
+      <p class="lead mt-5 italic">Like the last gulab jamun, it's gone. Let's find you something sweeter.</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-3">
+        <Button href="/" icon="arrow">Back to home</Button>
+        <Button href="/menu" variant="secondary">See the menu</Button>
+      </div>
+    </div>
+  </section>
+</Layout>

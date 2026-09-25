@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CtaButtons from '../components/CtaButtons.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import type { IconName } from '../lib/icons';
+
+const services: { icon: IconName; title: string; text: string }[] = [
+  { icon: 'gift', title: 'Weddings & Engagements', text: 'Mithai for the ceremony, the guests and the favours, from roka and mehndi to the reception.' },
+  { icon: 'users', title: 'Parties & Celebrations', text: 'Birthdays, baby showers, anniversaries and poojas. Sweets and savouries sized to your guest list.' },
+  { icon: 'box', title: 'Corporate Gifting', text: 'Gift boxes for staff and clients at Diwali, Eid and year-end, packed and ready on your date.' },
+  { icon: 'hands', title: 'Bulk & Festival Orders', text: 'Large orders for community events, temples, schools and festival gatherings.' },
+];
+
+const steps = [
+  { title: 'Send an enquiry', text: 'Tell us the date, the number of guests and what you have in mind.' },
+  { title: 'We plan and quote', text: 'We suggest a selection and quantities, and confirm the price.' },
+  { title: 'Fresh on the day', text: 'Your order is prepared for your date, ready to collect.' },
+];
+---
+<Layout title="Catering & Events" description="Indian sweets and savouries for weddings, parties, corporate gifting and bulk orders from Mithai Palace, North Mulgrave.">
+  <PageHero eyebrow="Catering & events" title="Sweets for Your Celebration"
+    lead="Weddings, parties and office gifting: we prepare mithai and namkeen in the quantities you need.">
+    <CtaButtons class="mt-8" align="center" enquiryLabel="Request a quote" enquiryHref="/contact?type=catering"
+      showVisitFallback={false} whatsappText="Hi Mithai Palace, I'd like a catering quote." />
+  </PageHero>
+
+  <section class="section" aria-labelledby="services">
+    <div class="container-site">
+      <SectionHeading id="services" eyebrow="What we cater" title="Occasions We Love" />
+      <ul class="grid gap-6 sm:grid-cols-2">
+        {services.map(s => (
+          <li class="card flex gap-5 p-6 sm:p-8">
+            <span class="flex size-14 shrink-0 items-center justify-center rounded-full border border-gold text-maroon"><Icon name={s.icon} size={28} /></span>
+            <div>
+              <h3 class="text-3xl">{s.title}</h3>
+              <p class="mt-2 text-ink-soft">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-maroon text-cream" aria-labelledby="how">
+    <div class="container-site">
+      <SectionHeading id="how" onDark eyebrow="How it works" title="Three Simple Steps" />
+      <ol class="grid gap-10 md:grid-cols-3">
+        {steps.map((s, i) => (
+          <li class="text-center">
+            <span class="mx-auto flex size-14 items-center justify-center rounded-full border border-gold-light font-display text-xl font-semibold text-gold-light">{i + 1}</span>
+            <h3 class="mt-5 text-3xl !text-cream">{s.title}</h3>
+            <p class="mx-auto mt-2 max-w-xs text-cream/80">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="mt-14">
+        <CtaButtons onDark align="center" enquiryLabel="Request a quote" enquiryHref="/contact?type=catering"
+          showVisitFallback={false} whatsappText="Hi Mithai Palace, I'd like a catering quote." />
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ArchFrame from '../components/ArchFrame.astro';
+import Button from '../components/Button.astro';
+import PageHero from '../components/PageHero.astro';
+import PetalDivider from '../components/PetalDivider.astro';
+import PlaceholderImage from '../components/PlaceholderImage.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+
+// CONFIRM: these describe how the sweets are made; check each is true for the shop
+const craft = [
+  { title: 'Milk, Slowly Reduced', text: 'Barfi and milk cake begin with milk simmered patiently until rich and grainy.' },
+  { title: 'Shaped by Hand', text: 'Ladoo are rolled and barfi cut by hand, the way it has always been done.' },
+  { title: 'Small Batches', text: 'Sweets are made in small quantities so they are enjoyed at their best.' },
+];
+---
+<Layout title="About Us" description="The story of Mithai Palace, an Indian sweet shop in North Mulgrave making traditional mithai.">
+  <PageHero eyebrow="About us" title="Our Story" lead="Traditionally sweet, since the day we opened our doors." />
+
+  <section class="section" aria-labelledby="story">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
+      <ArchFrame class="mx-auto aspect-[5/6] w-full max-w-sm">
+        <PlaceholderImage label="The Mithai Palace family" />
+      </ArchFrame>
+      <div>
+        <SectionHeading id="story" align="left" eyebrow="Mithai Palace" title="A Palace of Sweets in North Mulgrave" />
+        <!-- CONFIRM: replace with the owner's own story (who, when, where the recipes come from) -->
+        <div class="grid gap-4 text-lg text-ink-soft">
+          <p>
+            Mithai Palace was created to share the sweets that make Indian celebrations special:
+            kaju katli at Diwali, ladoo for good news, gulab jamun at every family gathering.
+          </p>
+          <p>
+            Our shop in North Mulgrave is a place to pick up something sweet for the week, choose a gift box
+            for someone you love, or plan the sweets for a wedding.
+          </p>
+          <p>
+            Every visitor is welcome. Come in, ask questions, and find a new favourite.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <PetalDivider />
+
+  <section class="section" aria-labelledby="craft">
+    <div class="container-site">
+      <SectionHeading id="craft" eyebrow="Our craft" title="How We Make Our Sweets" />
+      <ul class="grid gap-6 md:grid-cols-3">
+        {craft.map((c, i) => (
+          <li class="card p-8 text-center">
+            <span class="font-display text-4xl font-semibold text-gold">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="mt-3 text-3xl">{c.title}</h3>
+            <p class="mt-3 text-ink-soft">{c.text}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="mt-14 flex flex-wrap justify-center gap-3">
+        <Button href="/menu" icon="arrow">See our menu</Button>
+        <Button href="/contact" variant="secondary" icon="mail">Get in touch</Button>
+      </div>
+    </div>
+  </section>
+</Layout>

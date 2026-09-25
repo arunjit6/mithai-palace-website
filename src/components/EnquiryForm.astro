@@ -1,0 +1,150 @@
+---
+/**
+ * Order / catering enquiry form. Posts to site.formEndpoint (e.g. Formspree).
+ * While the endpoint is TBA the form is shown but can't be sent; visitors
+ * are pointed to the shop instead, so nothing is silently lost.
+ */
+import { site } from '../data/site';
+import { isTBA } from '../data/tba';
+
+const live = !isTBA(site.formEndpoint);
+const types = [
+  { value: 'order', label: 'Sweets order' },
+  { value: 'gift-boxes', label: 'Gift boxes' },
+  { value: 'catering', label: 'Catering or event' },
+  { value: 'corporate', label: 'Corporate gifting' },
+  { value: 'other', label: 'Something else' },
+];
+---
+<form id="enquiry-form" method="POST" action={live ? site.formEndpoint : undefined} data-live={String(live)} class="grid gap-5" novalidate>
+  {!live && (
+    <p class="rounded border border-gold bg-ivory px-4 py-3 text-ink" role="note">
+      <strong class="font-semibold text-maroon">Online enquiries open soon.</strong>{' '}
+      In the meantime, please visit the shop to place your order.
+    </p>
+  )}
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div class="field">
+      <label for="f-name">Your name <span class="req">(required)</span></label>
+      <input id="f-name" name="name" type="text" autocomplete="name" required aria-describedby="f-name-err" />
+      <p id="f-name-err" class="err" hidden>Please enter your name.</p>
+    </div>
+    <div class="field">
+      <label for="f-phone">Phone <span class="req">(required)</span></label>
+      <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required
+        pattern="[0-9 +()\-]{8,}" aria-describedby="f-phone-err" />
+      <p id="f-phone-err" class="err" hidden>Please enter a phone number we can call you on.</p>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="f-email">Email</label>
+    <input id="f-email" name="email" type="email" autocomplete="email" aria-describedby="f-email-err" />
+    <p id="f-email-err" class="err" hidden>Please check your email address.</p>
+  </div>
+
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div class="field">
+      <label for="f-type">What is it for?</label>
+      <select id="f-type" name="type">
+        {types.map(t => <option value={t.value}>{t.label}</option>)}
+      </select>
+    </div>
+    <div class="field">
+      <label for="f-date">Date needed</label>
+      <input id="f-date" name="date" type="date" />
+    </div>
+  </div>
+
+  <fieldset class="field">
+    <legend>Pickup or delivery?</legend>
+    <div class="mt-2 flex flex-wrap gap-x-6 gap-y-2">
+      <label class="inline-flex items-center gap-2 font-normal"><input type="radio" name="collection" value="pickup" checked /> Pickup from the shop</label>
+      <label class="inline-flex items-center gap-2 font-normal"><input type="radio" name="collection" value="delivery" /> Delivery (ask us)</label>
+    </div>
+  </fieldset>
+
+  <div class="field">
+    <label for="f-message">What would you like? <span class="req">(required)</span></label>
+    <textarea id="f-message" name="message" rows="5" required aria-describedby="f-message-hint f-message-err"
+      placeholder="e.g. 2 kg kaju katli and 20 Classic Boxes for a wedding on 14 November"></textarea>
+    <p id="f-message-hint" class="text-sm text-ink-soft">Tell us the sweets, quantities or number of guests.</p>
+    <p id="f-message-err" class="err" hidden>Please tell us what you would like to order.</p>
+  </div>
+
+  <!-- Spam trap: real people leave this empty -->
+  <div class="hidden" aria-hidden="true">
+    <label>Leave empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <button type="submit" class="btn btn-primary" aria-disabled={live ? undefined : 'true'}>Send enquiry</button>
+    <p id="f-status" class="text-ink-soft" role="status" aria-live="polite"></p>
+  </div>
+</form>
+
+<style>
+  .field { display: grid; gap: .375rem; }
+  .field label, .field legend { font-weight: 500; color: var(--color-ink); }
+  .req { font-weight: 400; font-size: .875rem; color: var(--color-ink-soft); }
+  .field input:not([type='radio']), .field select, .field textarea {
+    width: 100%;
+    background: var(--color-cream);
+    border: 1px solid color-mix(in srgb, var(--color-ink-soft) 40%, transparent);
+    border-radius: 4px;
+    padding: .75rem .875rem;
+    color: var(--color-ink);
+    font: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--color-maroon);
+    box-shadow: 0 0 0 2px var(--color-maroon);
+  }
+  .field [aria-invalid='true'] { border-color: var(--color-maroon-light); }
+  .field input[type='radio'] { accent-color: var(--color-maroon); width: 1.1rem; height: 1.1rem; }
+  .err { font-size: .875rem; color: var(--color-maroon-light); font-weight: 500; }
+  button[aria-disabled='true'] { opacity: .55; cursor: not-allowed; }
+</style>
+
+<script>
+  const form = document.getElementById('enquiry-form') as HTMLFormElement;
+  const status = document.getElementById('f-status')!;
+
+  // Preselect enquiry type from ?type=catering etc.
+  const type = new URLSearchParams(location.search).get('type');
+  const select = form.querySelector<HTMLSelectElement>('#f-type')!;
+  if (type && [...select.options].some(o => o.value === type)) select.value = type;
+
+  const fields = ['f-name', 'f-phone', 'f-email', 'f-message'].map(id => form.querySelector<HTMLInputElement>(`#${id}`)!);
+
+  const validate = (el: HTMLInputElement) => {
+    const ok = el.checkValidity() && (!el.required || el.value.trim() !== '');
+    el.setAttribute('aria-invalid', String(!ok));
+    form.querySelector<HTMLElement>(`#${el.id}-err`)!.hidden = ok;
+    return ok;
+  };
+  fields.forEach(el => el.addEventListener('blur', () => el.value && validate(el)));
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const invalid = fields.filter(el => !validate(el));
+    if (invalid.length) { invalid[0].focus(); status.textContent = 'Please fix the highlighted fields.'; return; }
+
+    if (form.dataset.live !== 'true') {
+      status.textContent = 'Online enquiries are not open yet. Please visit the shop to order.';
+      return;
+    }
+
+    status.textContent = 'Sending…';
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      status.textContent = 'Thank you! We have your enquiry and will be in touch soon.';
+    } catch {
+      status.textContent = 'Sorry, that did not send. Please try again or contact the shop directly.';
+    }
+  });
+</script>

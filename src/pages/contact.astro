@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import VisitUs from '../components/VisitUs.astro';
+import { site } from '../data/site';
+import { fullAddress, hoursRows, mailHref, telHref, whatsappHref } from '../lib/format';
+
+const tel = telHref(site.phone);
+const wa = whatsappHref(site.whatsapp, `Hi ${site.name}, I'd like to place an order.`);
+const mail = mailHref(site.email);
+---
+<Layout title="Contact & Order Enquiry" description="Send Mithai Palace an order, gift box or catering enquiry, or find the shop in North Mulgrave.">
+  <PageHero eyebrow="Contact" title="Order Enquiry"
+    lead="Tell us what you would like and when you need it. We will confirm availability and price." />
+
+  <section class="section" aria-label="Enquiry form and contact details">
+    <div class="container-site grid gap-12 lg:grid-cols-[1.6fr_1fr] lg:gap-16">
+      <div class="card p-6 hover:translate-y-0 hover:shadow-none sm:p-10">
+        <h2 class="mb-6 text-3xl">Send an Enquiry</h2>
+        <EnquiryForm />
+      </div>
+
+      <aside class="grid content-start gap-8">
+        <div>
+          <p class="eyebrow">Get in touch</p>
+          <ul class="mt-4 grid gap-4 text-lg">
+            {tel && <li><a href={tel} class="link inline-flex items-center gap-3"><Icon name="phone" class="text-gold-deep" />{site.phone}</a></li>}
+            {wa && <li><a href={wa} target="_blank" rel="noopener" class="link inline-flex items-center gap-3"><Icon name="whatsapp" class="text-gold-deep" />WhatsApp us</a></li>}
+            {mail && <li><a href={mail} class="link inline-flex items-center gap-3"><Icon name="mail" class="text-gold-deep" />{site.email}</a></li>}
+            {!tel && !wa && !mail && <li class="text-ink-soft">Phone, WhatsApp and email details are coming soon.</li>}
+          </ul>
+        </div>
+        <div class="hairline"></div>
+        <div>
+          <p class="eyebrow">Shop</p>
+          <p class="mt-4 flex gap-3 text-lg"><Icon name="pin" class="mt-1 shrink-0 text-gold-deep" />{fullAddress(site)}</p>
+          {!site.address.confirmed && <p class="mt-1 pl-8 text-sm text-ink-soft">Address to be confirmed</p>}
+        </div>
+        <div>
+          <p class="eyebrow">Opening hours</p>
+          <dl class="mt-4 grid gap-1 text-lg">
+            {hoursRows(site.hours).map(row => (
+              <div class="flex justify-between gap-4 border-b border-gold/30 py-1"><dt class="text-ink-soft">{row.days}</dt><dd>{row.open}</dd></div>
+            ))}
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <VisitUs />
+</Layout>
