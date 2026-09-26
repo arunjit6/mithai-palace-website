@@ -3,10 +3,10 @@ import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 
 const pages: Record<string, string[]> = {
-  'index.html': ['Sweetness for Every Celebration', 'Featured Categories', 'href="/menu#ladoo"', 'role="tablist"',
-    'Savour the Best of Mithai Palace', 'item=Kaju%20Katli', 'Festival special', 'Festival Orders', 'Giving Gifts with Mithai Palace',
+  'index.html': ['Sweetness for Every Celebration', 'Featured Categories', 'href="/menu#kaju-katli"', 'role="tablist"',
+    'Savour the Best of Mithai Palace', 'item=Kaju%20Katli', 'Festival Orders', 'Giving Gifts with Mithai Palace',
     'Which box, for whom?', 'For neighbours', 'Made with Care', 'Discover our story', 'Sweets for Every Occasion', 'Visit the Shop'],
-  'menu/index.html': ['Kaju Katli', 'Gulab Jamun', 'Samosa', 'id="namkeen"'],
+  'menu/index.html': ['Kaju Katli', 'Gulab Jamun', 'Samosa', 'Kaju Hazelnut Chocolate Crunch', 'Kaju Caramel Biscuit', 'id="namkeen"'],
   'gift-boxes/index.html': ['500 g', 'Diwali', 'Raksha Bandhan'],
   'catering/index.html': ['Weddings &amp; Engagements', '/contact?type=catering'],
   'about/index.html': ['North Mulgrave', 'How We Make Our Sweets'],
@@ -45,4 +45,10 @@ describe.skipIf(!existsSync('dist'))('built site', () => {
   });
 
   it('generates a sitemap', () => expect(existsSync('dist/sitemap-index.xml')).toBe(true));
+
+  it('does not use trademarked product names', () => {
+    const html = readFileSync('dist/menu/index.html', 'utf8');
+    expect(html).not.toContain('Nutella');
+    expect(html).not.toContain('Briscoff');
+  });
 });
